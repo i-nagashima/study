@@ -1,0 +1,133 @@
+/* Dockerfileとは
+------------------------------------------------- /
+中身はテキストファイル
+Docker imageの設計図
+DockerfileからDocker imageを作る
+
+/* docker build
+------------------------------------------------- /
+# Dockerfileからビルドする
+$ docker build <directory>
+$ docker build -t <name> <directory>    # 名前をつける
+$ docker build -f <docker.file> <directory>     # Dockerfileを指定する  # Dockerfile.dev
+
+/* FROM
+ * Docker instruction　# Dockerfileに記述する命令みたいな
+------------------------------------------------- /
+ベースとなるイメージを決定
+DockerfileはFROMから書き始める
+
+/* RUN
+ * Docker instruction　# Dockerfileに記述する命令みたいな
+------------------------------------------------- /
+Linuxコマンドを実行
+RUNを使うことで好きなようにカスタマイズ
+コマンドを&&でつなげる
+バックスラッシュ（\）で改行する
+
+RUN毎にLayerが作られる
+Layer数を最小限にするのが課題
+Layerを作るのはRUN, COPY, ADDの３つ
+
+！！すっげー重要！！
+RUNは/のディレクトリで実行される
+
+キャッシュを使う
+RUNを書くたびにLayerが作られるが、Dockerfileを検証（開発）するときはキャッシュをうまく使う
+検証）キャッシュが効く
+RUN apt-get update
+RUN apt-get install -y curl
+RUN apt-get install -y nginx
+本番）
+RUN apt-get update \
+    && apt-get install -y \
+    curl \
+    nginx
+
+!!これ重要!!
+上記の&&でつなげた場合はcdとかで移動しても移動先になる
+
+/* CMD
+ * Docker instruction　# Dockerfileに記述する命令みたいな
+------------------------------------------------- /
+containerのデフォルトのコマンドを指定
+CMD["excutable", "param1", "param2"]
+原則Dockerfileの最後に記述
+
+/* COPY
+ * Docker instruction　# Dockerfileに記述する命令みたいな
+------------------------------------------------- /
+ファイルをimage(container)にコピーする
+単純にファイルやフォルダをコピーする場合に使う
+COPY <fromファイル> <toディレクトリ/ファイル>
+
+/* ADD
+ * Docker instruction　# Dockerfileに記述する命令みたいな
+------------------------------------------------- /
+tarの圧縮ファイルをコピーして解凍したいときはADDを使う
+ADD <圧縮ファイル> <解凍先>
+
+/* ENTRYPOINT
+ * Docker instruction　# Dockerfileに記述する命令みたいな
+------------------------------------------------- /
+デフォルトのコマンドを指定することができる  # CMDと同じだか以下が違う
+ENTRYPOINTはrun時に上書きできない
+ENTRYPOINTがある場合はCMDは["param1", param2]の形をとる（つまりENTRYPOINTで指定したコマンドの引数）
+ 引数がいらない場合はCMDはいらない
+run時に上書きできるのはCMDの部分のみ　ただし引数["param1", "param2]は上書きできる
+ $ docker run <image> -la # など
+コンテナをコマンドのようにして使いたい時に使う
+ $ docker run <image> -la # など
+
+/* ENV
+ * Docker instruction　# Dockerfileに記述する命令みたいな
+------------------------------------------------- /
+環境変数を設定する
+ENV <key> <value>
+ENV <key>=<value>
+
+/* WORKDIR
+ * Docker instruction　# Dockerfileに記述する命令みたいな
+------------------------------------------------- /
+Docker instructionの実行ディレクトリを変更する
+※ディレクトリが存在しなければ自動で作成される
+
+！！すっげー重要！！
+RUNは/のディレクトリで実行される
+ただし&&でつなげた場合は移動するよ
+
+docker run で実行したときもWORKDIRのフォルダでログインされている
+
+RUN mkdir sample_folder
+WORKDIR /sample_folder
+RUN touch sample_file
+
+
+/* example
+------------------------------------------------- /
+# ubuntu
+FROM ubuntu:latest
+
+# core 
+RUN apt-get update \
+    && apt-get install -y \
+    sudo \
+    wget \
+    vim
+
+# /opt
+WORKDIR /opt
+
+# Anaconda
+RUN wget http://repo.continuum.io/archive/Anaconda3-2019.10-Linux-x86_64.sh \
+    && sh /opt/Anaconda3-2019.10-Linux-x86_64.sh -b -p /opt/anaconda3 \
+    && rm -f Anaconda3-2019.10-Linux-x86_64.sh
+ENV PATH /opt/anaconda3/bin:$PATH
+RUN pip install --upgrade pip
+
+# /
+WORKDIR /
+
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root", "--LabApp.token=''"]
+
+

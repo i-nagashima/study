@@ -1,0 +1,125 @@
+/* コマンド
+ * ------------------------------------------------------/
+// 基本
+$ mysql [option] [database_name]
+// ※ポイント 引数のあとはスペースをいれない
+// とりあえず（hoge=ユーザ, loalhost）
+& mysql -uhoge -p -hlocalhost
+// -u : ユーザ
+// -p : パスワード = パスをしていしないとプロンプト
+// -h : ホスト
+
+/* コマンドテクニック
+ * ------------------------------------------------------/
+// 結果を縦に出力 「;」の代わりに「¥G」
+> select * fro pref_info ¥G
+
+// コマンドラインに直接SQLを記述
+$ myasql -uroot -p -e "select * from hoge;" mydatabase
+// sql.txtに書く場合
+$ cat sql.txt | mysql -uroot -p mydatabase
+$ mysql -uroot -p mydatabase < sql.txt
+
+/* 管理系のSQL
+ * ------------------------------------------------------/
+// データベース作成（create database
+// collateは照合順序
+> create database db_name
+  [default character set = charset_name]
+  [default collate = collation_name]
+  [default encryption = 'y'/'n']
+// ドロップ
+> drop database db_name
+// alter
+> alter database db_name
+  [default character set = charset_name]
+  [default collate = collation_name]
+  [default encryption = 'y'/'n']
+
+/* データ型
+ * ------------------------------------------------------/
+// 数値型
+INTEGER
+// 文字列型
+CHAR(10), VARCHAR(10), TEXT
+// 日付時刻型
+DATETIME
+TIMESTAMP　→　DATETIMEでいい
+TIME
+// バイナリ型
+BLOB
+// ENUM型
+create table hoge (id integer, val ENUM('aaa', 'bbb', 'ccc'));
+// SET型
+// JSON型
+// SPATIAL型 →　空間情報
+
+/* コメント
+ * ------------------------------------------------------/
+「--」を使う。※ただし -- の後ろにスペースをおくこと。コンパイルエラーになるよ
+「/* */」も使える
+
+/* ユーザ管理
+ * ------------------------------------------------------/
+// ユーザの作成
+> create user hoge identified by 'password';
+// 接続元でユーザの作成
+// 接続もとを指定しない場合はどこからでも　create user hoge ide...
+> create user hoge@192.168.1.1 identified by 'password';
+
+// 権限をつける
+> grant select on [db].* to hoge;
+  grant select on test.* to hoge;
+// データベースフル
+> grant all on [db].* to hoge;
+// テーブルフル
+> grant all on [db].[table] to hoge;
+
+// 自分がどのユーザかを調べる
+> select user(), current_user();
+
+// ユーザの一覧を取得する
+> select user, host from mysql.user;
+
+// パスワードの変更
+> alter user hoge identified by 'password';
+
+// 権限の確認
+> show grants;
+> show grants for hoge;
+
+// ロール
+> create role app_user;
+> grant select on app_db.* to app_user;
+> grant insert on app_db.tbl to app_user;
+// ロールの権限を参照
+> show grants for app_user;
+// 作成したロールをアカウントに付与（ロールは複数付与できる）
+> grant app_user to user1;
+// ロールを有効にする（使用する）
+> set role app_user;
+// ロールを無効にする（未使用にする）
+> set role none;
+// set role するのが面倒だから、デフォルトロールを設定する
+> set default role app_user to user1;
+
+/* バックアップ
+ * ------------------------------------------------------/
+// mysqldump（ホット, 論理, フルバックアップ）
+$ mysqldump --single-transaction --master-data=2 --events --routines --triggers --hex-blob ¥
+  --host=192.168.1.1 --port=3306 --user=root --password [データベース名] > /path/backup.dump
+# --single-transaction : やっとけ
+# --master-data=2 : バイナリログを出力している場合は必要
+# --events : イベントスケジューラを使用している場合は必要
+# --routines : ストアドルーチン, ストアドファンクションを使用している場合は必要
+# --triggers : トリガーを使用している場合は必要
+# --hex-blob : バイナリデータ型のカラムを利用している場合は必要
+
+/* リストア
+ * ------------------------------------------------------/
+// mysqldump からリストア
+$ mysql --user=root --password --excute="RESET MASTER"
+$ mysql --user=root --password [データベース名] < /path/backup.dump
+
+
+

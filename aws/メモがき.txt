@@ -1,0 +1,25 @@
+メモがき
+aws-and-infra-vpc
+aws-and-infra-public-subnet-1a
+10.0.10.0/24
+aws-and-infra-private-subnet-1a
+10.0.20.0/24
+aws-and-infra-igw
+aws-and-infra-public-route
+aws-and-infra-web
+aws-and-infra-ssh-key
+35.73.47.54
+aws-and-infra-private-subnet-1c
+10.0.21.0/24
+aws-and-infra-db
+aws-and-infra-sabnet-group
+aws-and-infra-mysql80
+aws-and-infra-web
+mysql -h aws-and-infra-web.cd0buu5kt8zd.ap-northeast-1.rds.amazonaws.com -u root -p
+create database aws_and_infra default character set utf8 collate utf8_general_ci;
+create user 'aws_and_infra'@'%' identified by 'password';
+grant all on aws_and_infra.* to 'aws_and_infra'@'%';
+flush privileges;
+sudo amazon-linux-extras install -y php7.2
+sudo yum install -y php php-mbstring
+wget https://ja.wordpress.org/latest-ja.tar.gz

@@ -1,0 +1,182 @@
+/* docker login
+------------------------------------------------- /
+$ docker login
+
+/* docker image
+------------------------------------------------- /
+# imageをpullする
+$ docker pull <image>
+# imageを表示
+$ docker images
+
+/* docker rmi
+------------------------------------------------- /
+# imageを削除する
+$ docker rmi <image>
+# 強制的に削除する
+$ docker rmi <image> -f
+
+
+/* docker run
+------------------------------------------------- /
+# containerを起動する
+$ docker run <image>    # 同じイメージをrunすると同じコンテナが乗る
+
+# containerに名前をつける
+$ docker run --name <name> <image>
+
+# containerをバックグラウンドで起動する
+$ docker run -d <image>
+
+# containerをexit後に削除する（一回きりのcontainer）
+$ docker run --rm <image>
+
+### ubuntuをやってみよう
+$ docker run -it ubuntu bash
+
+# ファイルシステムを共有する  # -v aa:bb -v cc:dd 複数書ける
+-v <host>:<container>
+-v <volume>:<container>
+$ mkdir <host_mount_dir>
+$ docker run -it -v <host_mount_dir>:<container_dir> <image>
+  # <container_dir>はDockefileで作っておく
+  # でも<container_dir>がcontainerに無かったら自動で作ってくれる
+
+# ホストとコンテナのアクセス権限を共有する
+containerはユーザを指定しないとrootで動作する
+-u はcontainerをrunするユーザとグループを指定する（ホスト側のユーザとグループを指定）
+-u <user id>:<group id>
+-u <user id>  # groupを指定しない
+-u $(id -u):$(id -g)
+$ docker run -it -u $(id -u):$(id -g) -v <host_mount_dir>:<container_dir> <image>
+$ docker run -it -u $(id -u) -v <host_mount_dir>:<container_dir> <image>
+
+# ホストとコンテナのポートを繋げる  # -p aa:bb -p cc:bb 複数書ける
+-p <host_port>:<container_port>
+$ docker run -it -p <host_port>:<container_port> <image>
+
+# 環境変数を設定する  # -e aa=bb -e cc:dd 複数書ける
+-e <key>=<value>
+$ docker run -it -e <key>=<value> <image>
+
+# ネットワークを指定する
+--network <network>
+$ docker run -it --network <network> <image>
+
+# コンテナが使用するリソースの上限を指定する
+--cpus <# of CPUs>  # containerがアクセスできる上限のCPUを設定 # 物理コア数を指定
+--memory <byte>     # containerがアクセスできる上限のメモリを設定
+  k = KB, m = MB, g = GB
+$ docker run -it --cpus 4 --memory 2g <image>
+
+/* docker cp
+------------------------------------------------- /
+# ファイルをコピーする
+$ docker cp <host path> <container>:<container path>  # ホスト → コンテナ
+$ docker cp <container>:<container path> <host path>  # コンテナ → ホスト
+
+
+/* docker ps
+------------------------------------------------- /
+$ docker ps
+$ docker ps -a  # 動いていないものも全て
+
+/* docker inspect
+------------------------------------------------- /
+# containerの情報を表示する
+$ docker inspect <container>
+$ docker inspect <container> | grep -i <cpu>
+
+
+/* docker stop
+------------------------------------------------- /
+# containerを止める
+$ docker stop <container>
+
+/* containerに入った後の終了の仕方
+------------------------------------------------- /
+$ exit  # 終了もする
+$ ctrl + p + q  # containerは終了せずに抜ける # detach
+
+/* docker restart
+------------------------------------------------- /
+# containerをリスタートする
+$ docker restart <container>
+# attach
+$ docker attach <container>
+
+/* docker exec
+------------------------------------------------- /
+# リスタートしたcontainerをexecする
+$ docker exec -it <container> bash  # ubuntuの場合
+
+/* docker rm
+------------------------------------------------- /
+# containerを削除する   # これやらないとimageを削除できない
+$ docker rm <container>
+# 全て削除
+$ docker system prune
+
+
+/* docker network
+------------------------------------------------- /
+# docker networkを作成する
+$ docker network create <network>
+# docker networkを削除する
+$ docker network rm <network>
+# 使用していないdocker networkを全て削除する
+$ docker network prune
+
+
+/* マウント
+------------------------------------------------- /
+# ボリュームマウント
+  Docker Engine 管理下
+  ボリュームを作成してマウント
+  手軽に扱える が 直接操作しずらい（できない）
+# バインドマウント
+  ホストのどこでも
+  頻繁にファイル触りたい場合はこれ
+
+/* docker volume （ボリュームマウント）
+------------------------------------------------- /
+# docker volume（ボリュームマウント）を作成する
+$ docker volume create <volume>
+# docker volume（ボリュームマウント）を削除する
+$ docker volume rm <volume>
+# マウントされていないdocker volumeを全て削除する
+$ docker volume prune
+
+
+/* docker commit
+------------------------------------------------- /
+# containerからimageを作る
+$ docker commit <container> <new image>     # new image = ubuntu:updated # : でタグ名をつけられる
+
+/* docker tag
+------------------------------------------------- /
+# imageを別名（レポジトリ）で保存する
+$ docker tag <source> <target>
+$ docker tag ubuntu:updated <username>/my-first-repo
+
+# imageの本当の名前
+<hostname>:<port>/<username>/<repository>:<tag>
+# デフォルト
+<hostname>:<port> = registry-1.docker.io (Docker hub)
+<username> = library
+<tag> = latest
+
+/* docker push
+------------------------------------------------- /
+# docker hubにpushする
+$ docker push <image>   # tagで命名いた名前（レポジトリ）にpushする
+
+/* docker save
+------------------------------------------------- /
+# docker imageをtarにする
+$ docker save <image> > xxx.tar
+
+/* docker load
+------------------------------------------------- /
+# docker image.tarからロードする
+$ docker load < xxx.tar

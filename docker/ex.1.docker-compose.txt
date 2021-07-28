@@ -1,0 +1,247 @@
+# 複数のコンテナを簡単にrunできるDockerのツール
+
+/* docker-compose.yml
+------------------------------------------------- /
+# dockerをどのように起動していくかを記述する
+# docker imageをビルドするdocker buildも記述できる
+# YAMLで記述する
+# Dockerfileと同じ場所に入れておく
+
+# key:valueの組み合わせ
+<key>: <value>
+
+# フォーマットはこんな感じ
+今からdocker composeのファイルを書きますよ宣言
+  service1  # containerと思っていい
+    service1のパラメータ    # docker runコマンドのパラメータみたいなもん
+    service1のパラメータ
+  service2
+    service2のパラメータ
+    service2のパラメータ
+
+/* version
+------------------------------------------------- /
+version: '3'
+
+/* services:
+------------------------------------------------- /
+# services:の下にネストした形でserviceを書いていく
+services:
+  <service1>:
+    .....
+  <service2>:
+    .....
+
+/* service:build
+------------------------------------------------- /
+# docker imageをビルドする
+<service>:
+  build: .   # docker build . のこと
+
+/* service:image
+------------------------------------------------- /
+# docker imageを使う
+<service>:
+  image: <image>
+
+/* service:ports
+------------------------------------------------- /
+# -p <host_port>:<container_port>
+<service>:
+  ports:
+    - "<host_port>:<container_port>"
+  # 複数の場合
+  ports:
+    - "<host_port>:<container_port>"
+    - "<host_port>:<container_port>"
+
+/* service:networks
+------------------------------------------------- /
+# --network <network>
+<service>:
+  networks:
+    - <network>
+  # 複数の場合
+  networks:
+    - <network>
+    - <network>
+
+/* service:volumes
+------------------------------------------------- /
+# -v <host_vol>:<container_vol>
+<service>:
+  volumes:
+    - "<host_vol>:<container_vol>"
+  # 複数の場合
+  volumes:
+    - "<host_vol>:<container_vol>"
+    - "<host_vol>:<container_vol>"
+
+/* service:environment
+------------------------------------------------- /
+# -e <key>=<value>
+<service>:
+  environment:
+    <key>: <value>
+  # 複数の場合
+  environment:
+    <key>: <value>
+    <key>: <value>
+
+/* service:depends_on
+------------------------------------------------- /
+# 別のサービスに依存することを示す
+<service>:
+  depends_on:
+    - <service>
+  # 複数の場合
+  depends_on:
+    - <service>
+    - <service>
+
+/* service:links
+------------------------------------------------- /
+# 別のサービスと接続する
+<service>:
+  links:
+    - <service>
+  # 複数の場合
+  links:
+    - <service>
+    - <service>
+
+/* service:stdin
+------------------------------------------------- /
+# -i
+<service>:
+  stdin_open: true
+
+/* service:tty
+------------------------------------------------- /
+# -t
+<service>:
+  tty: true
+
+/* service:restart
+------------------------------------------------- /
+# コンテナが停止したときの再試行ポリシー
+<service>:
+  restart: no              # 何もしない
+  restart: always          # 必ず再起動する
+  restart: on-failure      # プロセスが0以外のステータスで終了したときは再起動する
+  restart: unless-stopped  # 停止していたときは再起動しない それ以外は再起動する
+
+
+/* networks:
+------------------------------------------------- /
+# networks:の下にネストした形でnetworkを書いていく
+networks:
+  <network1>:
+  <network2>:
+
+
+/* volumes:
+------------------------------------------------- /
+# volumes:の下にネストした形でvolumeを書いていく
+volumes:
+  <volume1>:
+  <volume2>:
+
+
+/* コマンド（dockerコマンドとの対比）
+------------------------------------------------- /
+$ docker build <dir>                 ⇔  $ docker-compose build
+$ docker run <image>                 ⇔  $ docker-compose up
+$ docker ps                          ⇔  $ docker-compose ps
+$ docker exec <container> <command>  ⇔  $ docker-compose exec <service> <command>
+
+/* docker-compose up
+------------------------------------------------- /
+# -d バックグラウンドで実行する
+$ docker-compose up -d
+# --build コンテナを開始前にイメージをビルドする
+$ docker-compose up --build
+
+/* docker-compose down
+------------------------------------------------- /
+# コンテナとネットワーク停止および削除する
+$ docker-compose down
+
+
+/* example 1
+------------------------------------------------- /
+version: "3"
+
+services:
+  # mysql
+  mysql01:
+    image: mysql:5.7
+    networks:
+      - net01
+    volumes:
+      - "mysql-vol01:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_01
+      MYSQL_USER: user_01
+      MYSQL_PASSWORD: user_01
+    restart: always
+    stdin_open: true
+    tty: true
+
+  # wordpress
+  wordpress01:
+    depends_on:
+      - mysql01
+    image: wordpress
+    networks:
+      - net01
+    volumes:
+      - "wordpress-vol01:/var/www/html"
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql01
+      WORDPRESS_DB_NAME: db_01
+      WORDPRESS_DB_USER: user_01
+      WORDPRESS_DB_PASSWORD: user_01
+    restart: always
+    stdin_open: true
+    tty: true
+
+networks:
+  net01:
+
+volumes:
+  mysql-vol01:
+  wordpress-vol01:
+
+
+/* example 2
+------------------------------------------------- /
+version: '3'
+
+volumes:
+    db-data:
+
+services:
+    web:
+        build: .
+        ports:
+            - '3000:3000'
+        volumes:
+            - '.:/product-register'
+        environment:
+            - 'DATABASE_PASSWORD=postgres'
+        tty: true
+        stdin_open: true
+        depends_on: 
+            - db
+        links: 
+            - db
+
+    db:
+        image: postgres
+        volumes: 
+            - 'db-data:/var/lib/postgresql/data'
+

@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  # mysql
+  mysql01:
+    image: mysql:5.7
+    networks:
+      - net01
+    volumes:
+      - "mysql-vol01:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_01
+      MYSQL_USER: user_01
+      MYSQL_PASSWORD: user_01
+    restart: always
+    stdin_open: true
+    tty: true
+
+  # wordpress
+  wordpress01:
+    depends_on:
+      - mysql01
+    image: wordpress
+    networks:
+      - net01
+    volumes:
+      - "wordpress-vol01:/var/www/html"
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql01
+      WORDPRESS_DB_NAME: db_01
+      WORDPRESS_DB_USER: user_01
+      WORDPRESS_DB_PASSWORD: user_01
+    restart: always
+    stdin_open: true
+    tty: true
+
+networks:
+  net01:
+
+volumes:
+  mysql-vol01:
+  wordpress-vol01:
