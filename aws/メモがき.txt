@@ -23,3 +23,13 @@ flush privileges;
 sudo amazon-linux-extras install -y php7.2
 sudo yum install -y php php-mbstring
 wget https://ja.wordpress.org/latest-ja.tar.gz
+10.0.11.0/24
+aws-and-infra-public-subnet-1c
+aws-and-infra-web_20210728
+10.0.11.10
+aws-and-infra-web
+aws-and-infra-web-01
+aws-and-infra-alb
+aws-and-infra-web-tg
+cloudwatch_alarms_topic
+aws-and-infra-ec2-cpu
