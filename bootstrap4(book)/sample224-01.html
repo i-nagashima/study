@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <title>画面サイズに応じたレイアウト</title>
+</head>
+
+<body>
+
+<div class="container">        <!-- 全体を囲むコンテナ -->
+
+  <h1>間隔の変化</h1>
+
+  <div class="row">
+    <div class="col-6" style="background:#FB8;height:150px;">ブロックA</div>
+    <div class="col-6" style="background:#FD9;height:150px;">ブロックB</div>
+  </div>
+  <div class="row">
+    <div class="col-6 col-md-3" style="background:#79F;height:150px;">ブロックC</div>
+    <div class="col-6 col-md-3 offset-md-6" style="background:#9BF;height:150px;">ブロックD</div>
+  </div>
+  <div class="row">
+    <div class="col-6" style="background:#6D9;height:150px;">ブロックE</div>
+    <div class="col-6" style="background:#BFA;height:150px;">ブロックF</div>
+  </div>
+
+</div>        <!-- 全体を囲むコンテナ -->
+
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

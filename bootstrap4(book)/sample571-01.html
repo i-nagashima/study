@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <title>ツールチップとポップオーバー</title>
+</head>
+
+<body>
+
+<div class="container">        <!-- 全体を囲むコンテナ -->
+
+  <h2 class="mt-4 mb-0">ツールチップ</h2>
+  <hr class="mt-2 mb-5">
+  <div class="text-center">
+    <button class="btn btn-danger" data-toggle="tooltip" data-placement="left"
+            title="お気に入りに追加します">
+      <i class="fas fa-heart"></i>
+    </button>
+    <button class="btn btn-success" data-toggle="tooltip" data-placement="top"
+            title="新しいページを追加します">
+      <i class="fas fa-plus"></i>
+    </button>
+    <button class="btn btn-primary" data-toggle="tooltip" data-placement="bottom"
+            title="タイル表示に変更します">
+      <i class="fas fa-th"></i>
+    </button>
+    <button class="btn btn-secondary" data-toggle="tooltip" data-placement="right"
+            title="設定画面を表示します">
+      <i class="fas fa-cog"></i>
+    </button>
+  </div>
+
+</div>        <!-- 全体を囲むコンテナ -->
+
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script>$('[data-toggle="tooltip"]').tooltip()</script>
+</body>
+
+</html>

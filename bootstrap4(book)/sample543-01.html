@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <title>カルーセル</title>
+</head>
+
+<body>
+
+<div class="container">        <!-- 全体を囲むコンテナ -->
+
+  <h2 class="mt-4">カルーセルの作成</h2>
+
+  <div class="carousel slide" id="c1" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#c1" data-slide-to="0" class="active"></li>
+      <li data-target="#c1" data-slide-to="1"></li>
+      <li data-target="#c1" data-slide-to="2"></li>
+      <li data-target="#c1" data-slide-to="3"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <a href="https://getbootstrap.com/">
+          <img src="img/photo1.jpg" class="d-block w-100">
+          <div class="carousel-caption d-none d-sm-block">
+            <h4>Bootstrap</h4>
+            <p class="mb-2">定番CSSフレームワーク</p>
+          </div>
+        </a>
+      </div>
+      <div class="carousel-item">
+        <a href="https://www.w3.org/">
+          <img src="img/photo2.jpg" class="d-block w-100">
+          <div class="carousel-caption d-none d-sm-block">
+            <h4>W3C</h4>
+            <p class="mb-2">WWWの標準化を推進する団体</p>
+          </div>
+        </a>
+      </div>
+      <div class="carousel-item">
+        <a href="https://sass-lang.com/">
+          <img src="img/photo3.jpg" class="d-block w-100">
+          <div class="carousel-caption d-none d-sm-block">
+            <h4>Sass</h4>
+            <p class="mb-2">CSSの記述をシステム化するメタ言語</p>
+          </div>
+        </a>
+      </div>
+      <div class="carousel-item">
+        <a href="http://www.cutt.co.jp/">
+          <img src="img/photo4.jpg" class="d-block w-100">
+          <div class="carousel-caption d-none d-sm-block">
+            <h4>CUTT System</h4>
+            <p class="mb-2">コンピュータ書籍の新刊を確認</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <a href="#c1" class="carousel-control-prev" data-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+      <span class="sr-only">前の画像へ</span>
+    </a>
+    <a href="#c1" class="carousel-control-next" data-slide="next">
+      <span class="carousel-control-next-icon"></span>
+      <span class="sr-only">次の画像へ</span>
+    </a>
+  </div>
+
+</div>        <!-- 全体を囲むコンテナ -->
+
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

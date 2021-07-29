@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <title>フォームの書式</title>
+</head>
+
+<body>
+
+<div class="container">        <!-- 全体を囲むコンテナ -->
+
+  <h1 class="mt-4 mb-5">お問い合わせ</h1>
+
+  <form>
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label text-md-right" for="Q_Name">お名前</label>
+      <div class="col-md-5">
+        <input type="text" class="form-control-plaintext" id="Q_Name" value="相澤 裕介" readonly>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label text-md-right" for="Q_Mail">メールアドレス</label>
+      <div class="col-md-5">
+        <input type="email" class="form-control" id="Q_Mail" value="aizawa@???.ne.jp" readonly>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label text-md-right" for="Q_Ask">お問い合わせ内容</label>
+      <div class="col-md-9">
+        <textarea rows="5" class="form-control" id="Q_Ask"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 text-right">
+        <button type="submit" class="btn btn-primary">送信</button>
+      </div>
+    </div>
+  </form>
+
+</div>        <!-- 全体を囲むコンテナ -->
+
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

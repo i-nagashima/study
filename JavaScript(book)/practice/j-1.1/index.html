@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>テンプレート</title>
+<link href="../../_common/images/favicon.ico" rel="shortcut icon">
+<link href="https://fonts.googleapis.com/css?family=M+PLUS+1p:400,500" rel="stylesheet">
+<link href="../../_common/css/style.css" rel="stylesheet">
+</head>
+<body>
+<header>
+<div class="container">
+<h1>タイトル</h1>
+<h2>サブタイトル</h2>
+</div><!-- /.container -->
+</header>
+<main>
+<div class="container">
+<section>
+
+</section>
+</div><!-- /.container -->
+</main>
+<footer>
+<div class="container">
+<p>JavaScript Samples</p>
+</div><!-- /.container -->
+</footer>
+<script>
+    'use strict';
+
+    let cody = new Object();
+    cody.living = true;
+    cody.age = 33;
+    cody.gender = 'male';
+    cody.getGender = function() {
+        return cody.gender;
+    }
+    console.log(cody.getGender());
+
+    let myObject = new Object();
+    myObject['0'] = 'f';
+    myObject['1'] = 'o';
+    myObject['2'] = '0';
+    console.log(myObject);
+
+    let myString = new String('foo');
+    console.log(myString);
+
+    let codyA = new Object();
+    codyA.living = true;
+    codyA.age = 33;
+    codyA.gender = 'male';
+    codyA.getGender = function() {
+        return codyA.gender;
+    }
+    console.log(codyA);
+
+    let Person = function(living, age, gender) {
+        this.living = living;
+        this.age = age;
+        this.gender = gender;
+        this.getGender = function() {
+            return this.gender;
+        }
+    }
+    let codyB = new Person(true, 33, 'male');
+    console.log(codyB);
+</script>
+</body>
+</html>

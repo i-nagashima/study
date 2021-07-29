@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <title>印刷レイアウト</title>
+</head>
+
+<body>
+
+<div class="container">        <!-- 全体を囲むコンテナ -->
+
+  <h1>印刷しない要素</h1>
+
+  <div class="row">
+
+    <!-- メインブロック -->
+    <div class="col-lg-9">
+      <div class="row">
+        <div class="col-12"   style="height:100px;background:#FD9;"><h3>新着情報</h3></div>
+        <div class="col-12 d-print-none" style="height:100px;background:#F00;"><h3>広告</h3></div>
+        <div class="col-lg-6" style="height:200px;background:#6D9;"><h3>記事A</h3></div>
+        <div class="col-lg-6" style="height:200px;background:#BFA;"><h3>記事B</h3></div>
+      </div>
+    </div>
+
+    <!-- サイドバー -->
+    <div class="col-lg-3 d-print-none" style="background:#BBB;height:400px;">
+      <h3>サイドバー</h3>
+    </div>
+
+  </div>
+
+</div>        <!-- 全体を囲むコンテナ -->
+
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

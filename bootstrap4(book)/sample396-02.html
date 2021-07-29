@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <title>フォームの書式</title>
+</head>
+
+<body>
+
+<div class="container">        <!-- 全体を囲むコンテナ -->
+
+  <h1 class="mt-4 mb-5">購入フォーム</h1>
+
+  <form>
+
+    <div class="form-group mb-4">
+      <label for="B_Name">お届け先氏名</label>
+      <input type="text" class="form-control" id="B_Name">
+    </div>
+
+    <div class="form-group mb-4">
+      <label for="Q_address">お届け先住所</label>
+      <input type="text" class="form-control" id="B_address">
+    </div>
+
+    <div class="form-group mb-4">
+      オプションの選択<br>
+      <div class="form-check form-check-inline mr-4">
+        <input class="form-check-input" type="checkbox" id="gift">
+        <label class="form-check-label" for="gift">ギフト包装</label>
+      </div>
+      <div class="form-check form-check-inline mr-4">
+        <input class="form-check-input" type="checkbox" id="deli_date">
+        <label class="form-check-label" for="deli_date">配送日指定</label>
+      </div>
+      <div class="form-check form-check-inline mr-4">
+        <input class="form-check-input" type="checkbox" id="post_mailing" disabled>
+        <label class="form-check-label" for="post_mailing">メール便</label>
+      </div>
+    </div>
+
+    <div class="form-group mb-4">
+      商品の色<br>
+      <div class="form-check form-check-inline mr-4">
+        <input class="form-check-input" type="radio" name="color" id="color_white" checked>
+        <label class="form-check-label" for="color_red">白</label>
+      </div>
+      <div class="form-check form-check-inline mr-4">
+        <input class="form-check-input" type="radio" name="color" id="color_red">
+        <label class="form-check-label" for="color_red">赤</label>
+      </div>
+      <div class="form-check form-check-inline mr-4">
+        <input class="form-check-input" type="radio" name="color" id="color_black" disabled>
+        <label class="form-check-label" for="color_black">黒</label>
+      </div>
+    </div>
+
+    <button class="btn btn-lite">戻る</button>
+    <button class="btn btn-primary">次へ</button>
+  </form>
+
+</div>        <!-- 全体を囲むコンテナ -->
+
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
