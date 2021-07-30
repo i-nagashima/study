@@ -33,3 +33,4 @@ aws-and-infra-alb
 aws-and-infra-web-tg
 cloudwatch_alarms_topic
 aws-and-infra-ec2-cpu
+AwsAndInfraWeb

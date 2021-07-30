@@ -1,0 +1,103 @@
+Node.jsで動作するパッケージマネージャー
+npmと互換性があり、npmで使用していたプロジェクト設定ファイル（package.json）がそのまま使える。
+
+/* インストールとアップデート
+------------------------------------------------- /
+# インストール
+$ npm install -g yarn
+
+# アップデート
+$ npm update -g yarn
+
+/* 初期設定
+------------------------------------------------- /
+$ yarn init -y
+
+/* インストールパッケージ一覧
+------------------------------------------------- /
+# Global
+$ yarn global list --depth=0
+
+# Local
+$ yarn list --depth=0
+
+/* インストール
+------------------------------------------------- /
+# Global
+$ yarn global add {package}
+
+# Local (package.jsonに記録されているパッケージをインストール)
+$ yarn install
+# Local (dependenciesにインストール)
+$ yarn add {package}
+# Local (devDependenciesにインストール)
+$ yarn add --dev {package}
+
+※dependenciesとdevDependenciesはどちらかしか入らない
+
+/* スクリプト
+------------------------------------------------- /
+# 一覧
+$ yarn run
+# 実行
+$ yarn run {script}
+# 環境変数の表示
+$ yarn run env
+
+"scripts": {
+    "build": "babel src -d lib",
+    "test": "jest"
+}
+
+/* ローカルパッケージの実行
+------------------------------------------------- /
+# ローカル(node_modules\.bin)にインストールされたパッケージをパスを指定せずに実行する
+$ yarn -s run {package}
+
+/* アンインストール
+------------------------------------------------- /
+# Global
+$ yarn global remove {package}
+
+# Local (dependenciesからアンインストール)
+$ yarn remove {package}
+# Local (devDependenciesからアンインストール)
+$ yarn remove --dev {package}
+
+/* アップデート
+------------------------------------------------- /
+# Global (全体をアップデート)
+$ yarn global upgrade
+# Global (指定したパッケージをアップデート)
+$ yarn global upgrade {package}
+
+# Local (全体をアップデート)
+$ yarn upgrade
+# Local (指定したパッケージをアップデート)
+$ yarn upgrade {package}
+
+/* パッケージの情報
+------------------------------------------------- /
+# Global
+$ yarn info {package}
+
+# Local
+$ yarn info {package}
+
+/* キャッシュ
+------------------------------------------------- /
+# クリア
+$ yarn cache clean
+# 一覧
+$ yarn cache list
+# ディレクトリ
+$ yarn cache dir
+
+/* コンフィグ
+------------------------------------------------- /
+# 一覧
+$ yarn config list
+# プロパティ名指定
+$ yarn config get {プロパティ名}
+
+
