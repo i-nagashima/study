@@ -1,0 +1,48 @@
+/* 接続
+ * ------------------------------------------------------/
+$ mysql [option] [database_name]
+// ※ポイント 引数のあとはスペースをいれない
+// とりあえず（hoge=ユーザ, loalhost）
+& mysql -uhoge -p -hlocalhost
+// -u : ユーザ
+// -p : パスワード = パスをしていしないとプロンプト
+// -h : ホスト
+
+/* コマンドテクニック
+ * ------------------------------------------------------/
+// 結果を縦に出力 「;」の代わりに「¥G」
+> select * fro pref_info ¥G
+
+// コマンドラインに直接SQLを記述
+$ myasql -uroot -p -e "select * from hoge;" mydatabase
+// sql.txtに書く場合
+$ cat sql.txt | mysql -uroot -p mydatabase
+$ mysql -uroot -p mydatabase < sql.txt
+
+/* 管理系のSQL
+ * ------------------------------------------------------/
+// データベース作成
+create database
+> create database db_name
+  [default character set = charset_name]
+  [default collate = collation_name]
+  [default encryption = 'y'/'n']
+// collateは照合順序
+
+drop database
+> drop database db_name
+
+alter database
+> alter database db_name
+  [default character set = charset_name]
+  [default collate = collation_name]
+  [default encryption = 'y'/'n']
+
+// テーブルの作成
+create table
+> create []
+
+/* コメント
+ * ------------------------------------------------------/
+「--」を使う。※ただし -- の後ろにスペースをおくこと。コンパイルエラーになるよ
+「/* */」も使える

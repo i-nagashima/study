@@ -1,0 +1,51 @@
+/* STATUS コマンド
+ * ------------------------------------------------------/
+> STATUS
+
+文字コードに関するもの
+Server characterset:	MySQLサーバの文字コード
+Db     characterset:	カレントデータベースの文字コード
+Client characterset:	接続クライアントの文字コード
+Conn.  characterset:	接続の文字コード
+
+/* SHOW コマンド
+ * ------------------------------------------------------/
+
+// データベースに関する情報
+> SHOW DATABASES;
+
+// テーブルとビューに関する情報
+> USE <database>;
+> SHOW TABLES;
+> SHOW TABLES FROM sales;
+> SHOW FULL TABLES;
+
+// テーブルとビューのカラムに関する情報
+> SHOW COLUMNS FROM mytalbe1;
+or
+> DESC mytable1;
+
+// その他のオブジェクト
+> SHOW INDEX FROM <table_name>;
+
+> SHOW TRIGGERS;
+> SHOW CREATE TRIGGER <trigger_name>;
+
+> SHOW CREATE PROCEDURE <procedure_name>;
+> SHOW PROCEDURE CODE <procedure_name>;
+
+> SHOW CREATE FUNCTION <function_name>;
+> SHOW FUNCTION CODE <function_name>;
+
+// サーバや接続の動作オブションを見る
+MySQLシステム変数の値とか
+> SHOW GLOBAL VARIABLES;
+> SHOW SESSION VARIABLES;
+> SHOW VARIABLES ← SHOW SESSION VARIABLESと同じ
+
+// 動作中の状態を見る
+MySQLサーバの実行状態に関する値。メモリーやディスクの使用状況、接続数に関する情報
+> SHOW STATUS;
+その時点で稼働中のプロセスを一覧で表示
+> SHOW PROCESSLIST;
+

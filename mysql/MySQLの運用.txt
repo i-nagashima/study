@@ -1,0 +1,76 @@
+/* MySQLのプロセスアーキテクチャ
+ * ------------------------------------------------------/
+MySQLはシングルプロセス・マルチスレッドモデルのデータベース。
+
+// 現在のコネクション（= スレッド）の情報は
+performance_schema の threads テーブルで確認できる
+> SELECT * FROM performance_schema.threads WHERE type = 'FOREGROUND' \G
+
+// MySQLプロセスの起動と停止
+systemd を利用するのが一般的だが、頼らずにプロセスを起動／停止することもできる。
+
+// 手動での起動手順
+$ sudo mysqld --initialize --user=mysql
+$ sudo mysqld --user=mysql --deamonize
+
+--initialize
+データディレクトリの初期化を行ったあと停止する。
+このとき、--userオプションでmysqldを実行するアカウントを指定する。
+これを忘れた場合、データディレクトリはrootアカウントがオーナとなる
+
+--deamonize
+データディレクトリの初期化が終わっていれば、mysqldプロセスを起動できる。
+Linuxでは--deamonizeオプションが存在し、バックグランドで起動する。
+
+// 手動での停止手順
+$ mysqladmin -u root -p shutdown
+// MySQL5.7とそれ以降ではSHUTDOWNステートメントでも可能
+> SHUTDOWN;
+
+/* MySQLのパラメータ
+ * ------------------------------------------------------/
+・グローバルスコープのみが存在するパラメータ
+・グローバルスコープとセッションスコープが存在するパラメータ
+・セッションスコープのみが存在するパラメータ
+
+/* 設定ファイル（my.cnf）
+ * ------------------------------------------------------/
+// my.cnf の読み込み順
+※低いほうが優先順位が高い
+1. /etc/my.cnf
+2. /etc/mysql/my.cnf
+3. SYSCONFDIR/my.cnf
+4. $MYSQL_HOME/my.cnf
+5. --defaults-extra-file
+6. $HOME/.my.cnf
+7. $HOME/.mylogin.cnf
+8. DATADIR/mysqld-auto.cnf
+9. コマンドラインオプションで与えられた引数
+
+/* エラーログ
+ * ------------------------------------------------------/
+// パス
+--log-error オプションで指定できる
+パッケージの場合は付属のmy.cnfで /var/log/mysqld.log に指定されていることが多い。
+my.cnf もしくはコマンドで確認できる。
+> SHOW GLOBAL VARIABLES LIKE 'log_error';
+
+// ログのレベルは システム／エラー／ワーニング／インフォメーションの4レベル
+--log-error-verbosity オプションで制御できる
+コマンドで確認できる。
+> SHOW GLOBAL VARIABLES LIKE 'log_error_verbosity';
+
+/* スロークエリーログ
+ * ------------------------------------------------------/
+mysqldがSQLを処理するのにかかった時間を記録するログ。
+デフォルトでは無効。
+my.cnf に slow_query_log オプションを記載する。
+またはサーバー変数の slow_query_log を ON に設定する。
+> SHOW VARIABLES LIKE 'slow_query_log';
+
+/* パラメータチューニング
+ * ------------------------------------------------------/
+// innodb_buffer_pool_size
+最も重要なパラメータ
+InnoDBの全てのテーブルで利用されるバッファプール（メモリ上に配置）のサイズを指定します。
+物理メモリの70%程度を目安とする

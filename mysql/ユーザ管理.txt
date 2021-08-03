@@ -1,0 +1,134 @@
+/* アカウントの作成と権限の付与
+ * ------------------------------------------------------/
+// ユーザの作成
+> CREATE USER hoge IDENTIFIED BY 'password';
+
+// 権限をつける
+> GRANT SELECT ON [db].* TO hoge;
+  GRANT SELECT ON test.* TO hoge;
+
+// データベースフル
+> GRANT ALL ON [db].* TO hoge;
+
+// テーブルフル
+> GRANT ALL ON [db].[table] TO hoge;
+
+// 権限の剥奪
+> REVOKE SELECT ON [db].* FROM hoge;
+
+// アカウントを削除
+> DROP USER hoge;
+
+/* アカウント識別
+ * ------------------------------------------------------/
+アカウントはユーザ名と接続元のクライアントで識別される。
+ユーザ名の大文字と小文字は区別される。
+接続元はユーザ名のあとに @ + IPアドレスまたはホスト名
+hoge@192.168.1.1
+> create user hoge@192.168.1.1 identified by 'password'
+
+接続元はLIKEと同じワイルドカード（%と_）を使用できる
+%等を使用する場合は ' でくくる必要あり
+> create user hoge@'%' identified by 'password';
+
+接続元を指定しない場合は % が指定されたものとみなす
+
+クライアントから接続した場合は、ワイルドカードを含まない接続元が一致するもの、
+その後ワイルドカードを含むもの、そして最後に空文字のアカウントの順に検索される。
+
+// 自分がどのユーザかを調べる
+> select user(), current_user();
+
+// ユーザの一覧を取得する
+> select user, host from mysql.user;
+
+/* 認証
+ * ------------------------------------------------------/
+// caching_sha2_password
+MySQL8.0のデフォルトの認証方法
+> create user hoge identified with caching_sha2_password by 'password';
+
+クライアントライブラリによっては暗号化接続が使用されないこともある。
+常に暗号化接続を必要とするように設定しておいたほうがよいかもしれない
+> create user hoge@localhost require ssl;
+> alter user hoge@localhost require ssl;
+
+※全アカウントに暗号化接続を要求する場合はサーバ変数に設定する
+[mysqld]
+require_secure_transport = ON
+
+// mysql_native_password
+MySQL5.7までのデフォルトの認証方式
+古いクライアントから接続する必要がある、caching_sha2_passwordが使用できない場合はこちら
+> create user hoge identified with mysql_native_password bu 'password';
+
+// auth_socker
+OSのユーザとMySQLのアカウントは基本的には無関係
+OSのユーザ名と同じ名前のMySQLアカウントでパスワードなしで接続したい場合はこちら
+※基本やらないかな
+プラグインをインストールする必要がある
+> install plugin auth_socket soname 'auth_socket.so';
+この認証方式を使用したいアカウントの作成
+> create user hoge@localhost identified with auth_socket;
+
+/* パスワード管理
+ * ------------------------------------------------------/
+// パスワードの変更
+> alter user hoge identified by 'password';
+
+// パスワードの有効期限
+有効期限は default_password_lifetime 変数で日数を設定する。
+デフォルトは 0 で無期限。
+ALTER USER でアカウントごとに有効期限を設定することもできる。
+> ALTER USER hoge PASSWORD EXPIRE INTERVAL 90 DAY;
+
+// 有効期限を無期限にする
+> ALTER USER hoge PASSWORD EXPIRE NEVER;
+
+// 強制的に期限切れにする
+> ALTER USER hoge PASSWORD EXPIRE;
+
+/* 権限
+ * ------------------------------------------------------/
+// アカウントの権限の確認
+> SHOW GRANTS FOR hoge;
+
+// 権限の適用レベル
+権限の適用レベルは6種類ある。
+・グローバル（G）
+　GRANT ... ON *.* を指定したときに適用されるレベル。MySQL全体に影響する。
+・データベース（D）
+　GRANT ... ON DB名.* を指定したときに適用されるレベル。指定したデータベース配下だけに影響する。
+・テーブル（T）
+　GRANT ... ON DB名.テーブル名 を指定したときに適用されるレベル。指定したテーブルだけに影響する。
+・カラム（C）
+　GRANT SELECT (カラム名) ON DB.テーブル名 のようにカラム名を指定したときに適用されるレベル。指定したカラムだけに影響する。
+・ストアドルーチン（R）
+　GRANT ... ON FUNCTION や GRANT ... ON PROCEDURE を指定したときに適用されるレベル。指定した関数／プロシージャだけに影響。
+・プロキシユーザー（R）
+　GRANT PROXY ON アカウント を指定したときに適用されるレベル。
+
+/* ロール
+ * ------------------------------------------------------/
+権限をまとめて、カウントに付与する仕組み。
+
+// ロールの作成
+> create role app_user;
+> grant select on app_db.* to app_user;
+> grant insert on app_db.tbl to app_user;
+
+// ロールの権限を参照
+> show grants for app_user;
+
+// 作成したロールをアカウントに付与（ロールは複数付与できる）
+> grant app_user to user1;
+
+// ロールを有効にする（使用する）
+> set role app_user;
+
+// ロールを無効にする（未使用にする）
+> set role none;
+
+// set role するのが面倒だから、デフォルトロールを設定する
+> set default role app_user to user1;
+

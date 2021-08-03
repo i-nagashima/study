@@ -1,0 +1,53 @@
+/* RPM系（Oracle, Redhat, CentOS, Fedora）
+ * ------------------------------------------------------/
+1.YumリポジトリーRPMファイルをダウンロードしインストール
+2.MySQLをインストール
+3.MySQLサーバを起動（初回起動時だけデータベースの初期化）
+
+データベースディレクトリ：/var/lib/mysql/
+設定ファイル：/etc/my.cnf
+
+/* Debian系（Debian, Ubuntu）
+ * ------------------------------------------------------/
+1.APTリポジトリーdebファイルをダウンロードしインストール
+MySQL APT Repository(https://dev.mysql.com/download/repo/apt/)
+# dpkg -i mysql-apt-config_w.x.y-z_all.deb
+# apt update
+2.MySQLをインストール
+# apt install mysql-server
+3.MySQLサーバを起動（初回起動時だけデータベースの初期化）
+# service mysql start
+
+データベースディレクトリ：/var/lib/mysql/
+設定ファイル：/etc/mysql/my.cnf
+追加設定ファイル：/etc/mysql/conf.d/mysql.cnf
+
+/* Windows
+ * ------------------------------------------------------/
+1.インストール用MSIファイルをダウンロード
+2.ダウンロードしたインストーラのプログラムを起動する
+3.インストールウィザードに従ってインストール
+迷ったら「Server only」
+4.設定ウィザードに従って設定
+
+/* macOS
+ * ------------------------------------------------------/
+1.dmgファイルをダウンロードする
+2.ダウンロードしたdmgファイルをマウントする
+3.インストールウィザードを実行する
+
+/* Docker
+ * ------------------------------------------------------/
+$ docker run --name <name> -e MYSQL_ROOT_PASSWORD=<pass> -d mysql
+# mysqlコマンド
+$ docker exec -it <name> mysql -u root -p
+# コンテナにログイン
+$ docker exec -it <name> bash
+
+ex)
+$ docker run --name mysql5.7 -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:5.7
+
+データベースディレクトリ：/var/lib/mysql/
+設定ファイル：/etc/mysql/my.cnf
+  本体は /etc/mysql/mysql.conf.d/mysqld.cnf
+追加設定ファイル：/etc/mysql/conf.d/mysql.cnf ← ※こいつに記述していく

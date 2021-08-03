@@ -1,0 +1,17 @@
+/* データ型
+ * ------------------------------------------------------/
+// 数値型
+INTEGER
+// 文字列型
+CHAR(10), VARCHAR(10), TEXT
+// 日付時刻型
+DATETIME
+TIMESTAMP　→　DATETIMEでいい
+TIME
+// バイナリ型
+BLOB
+// ENUM型
+create table hoge (id integer, val ENUM('aaa', 'bbb', 'ccc'));
+// SET型
+// JSON型
+// SPATIAL型 →　空間情報
