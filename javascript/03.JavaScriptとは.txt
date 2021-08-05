@@ -1,0 +1,26 @@
+/* JavaScriptとECMAScript
+ * ------------------------------------------------------/
+ECMAScript =
+JavaScript言語のコアの部分をECMAScriptとして仕様策定
+
+ブラウザ環境の場合、JavaScriptの中に
+　ECMAScript
+　Web APIs(DOM API...) // ブラウザの場合
+がある
+
+Node.js環境の場合、JavaScriptの中に
+　ECMAScript
+　CommonJS
+がある
+
+/* ECMAScriptとバージョン
+ * ------------------------------------------------------/
+2009  5版  ES5
+2015  6版  ES6(ES2015)   // ここがポイント
+2016  7版  ES7(ES2016)
+2017  8版  ES8(ES2017)
+2018  9版  ES9(ES2018)
+2019 10版 ES10(ES2019)
+2020 11版 ES11(ES2020)
+2021 12版 ES12(ES2021)
+
