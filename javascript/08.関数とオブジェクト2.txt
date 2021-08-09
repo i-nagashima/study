@@ -1,0 +1,123 @@
+/* コンストラクター関数
+ * ------------------------------------------------------/
+// 普通の関数とコンストラクター関数を明示的に分けるために
+// コンストラクター関数は頭大文字にする
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+}
+const bob = new Person('Bob', 18);
+
+/* prototype
+ * ------------------------------------------------------/
+オブジェクトに存在する特別なプロパティ
+コンストラクタ関数と合わせて使用
+
+Person.prototype.hello = function() {
+    console.log('hello' + this.name);
+}
+
+// なぜプロトタイプを使用するのか
+→メモリの効率化のため。
+__proto__ に同じ関数の参照が渡るため
+インスタンス化した際にはprototypeの参照が__proto__にコピーされる
+
+/* 関数コンストラクター
+ * ------------------------------------------------------/
+※一般的には使わない　関数は宣言して使う。
+const fn1 = new Function('a', 'b', 'return a + b');
+const result = fn1(1, 2);
+関数コンストラクターから関数を生成できる
+
+/* プロトタイプチェーン
+ * ------------------------------------------------------/
+自身のオブジェクト → prototype → Objectのprototype
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+    this.hello = function() {
+        // 最初はこれ 1
+    }
+}
+Person.prototype.hello = function() {
+    // 次はこれ 2
+}
+Object.prototype.hello = function() {
+    // さらに次 3
+}
+const bob = new Person('Bob', 18);
+bob.hello();
+
+/* プロトタイプ継承
+ * ------------------------------------------------------/
+別のコンストラクター関数のプロトタイプを受け継いで、機能を流用できるようにすること。
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+}
+Person.prototype.hello = function() {
+    console.log('hello' + this.name);
+}
+function Japanese(name, age) {
+    Person.call(this, name, age);
+}
+Japanese.prototype = Object.create(Person.prototype);
+
+/* クラス
+ * ------------------------------------------------------/
+コンストラクター関数をクラス表記で書けるようにしたもの。→ シンタックスシュガー
+
+class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    hello() {
+        console.log('hello' + this.name);
+    }
+}
+
+/* クラス継承
+ * ------------------------------------------------------/
+class Person {
+    constructor(name, age) {
+        this.name;
+        this.age;
+    }
+    hello() {
+        console.log('hello' + this.name);
+    }
+}
+class Japanese extends Person {
+    constructor(name, age, gender) {
+        super(name, age);
+        this.gender = gender;
+    }
+}
+
+/* setter, getterとstatic
+ * ------------------------------------------------------/
+class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    // getter, setter
+    get name() {
+        return this.name;
+    }
+    set name(value) {
+        this.name = val;
+    }
+
+    // static
+    static hello() {
+        console.log('static');
+    }
+}
+Person.hello();
+
+/* チェーンメソッド
+ * ------------------------------------------------------/
+一つのインスタンスに対して連続でメソッドを呼ぶ。
+return this;
