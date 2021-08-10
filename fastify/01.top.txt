@@ -1,0 +1,151 @@
+/* Why
+---------------------------------------------------- */
+効率的なサーバは、インフラのコストを削減し、負荷がかかった状態での応答性を向上させ、ユーザーを満足させることを意味します。
+セキュリティ検証やハンディな開発を犠牲にすることなく、可能な限り多くのリクエストに対応するためには、
+どのようにしてサーバのリソースを効率的に処理すればよいのでしょうか。
+Fastifyの登場です。
+Fastifyは、最小限のオーバーヘッドと強力なプラグインアーキテクチャで
+最高の開発者体験を提供することに重点を置いたウェブフレームワークです。
+HapiやExpressにインスパイアされており、私たちが知る限り、最速のWebフレームワークの一つです。
+
+/* Core features
+---------------------------------------------------- */
+これらは、fastifyが構築された主な機能と原則です。
+- 高いパフォーマンス：私たちが知る限り、Fastifyは最速のWebフレームワークの一つです。
+  コードの複雑さにもよりますが、1秒間に最大3万のリクエストを処理することができます。
+- 拡張可能。Fastifyは、フック、プラグイン、デコレーターによって完全に拡張可能です。
+- スキーマベース：必須ではありませんが、ルートを検証し、
+  出力をシリアライズするためにJSONスキーマを使用することをお勧めします。
+- ロギング：ロギングは非常に重要ですが、コストがかかります。
+  このコストをほぼゼロにするために、最高のロガーを選びました、Pino!
+- 開発者に優しい：このフレームワークは、パフォーマンスやセキュリティを犠牲にすることなく、
+  表現力に優れ、開発者が日常的に使用する際に役立つように作られています。
+- TypeScript対応：成長するTypeScriptコミュニティをサポートするために、TypeScript型宣言ファイルの維持に努めています。
+
+/* Quick start
+---------------------------------------------------- */
+Get fastify with NPM:
+npm install fastify
+
+Then create server.js and add the following content:
+
+// Require the framework and instantiate it
+const fastify = require('fastify')({ logger: true })
+
+// Declare a route
+fastify.get('/', async (request, reply) => {
+  return { hello: 'world' }
+})
+
+// Run the server!
+const start = async () => {
+  try {
+    await fastify.listen(3000)
+  } catch (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
+}
+start()
+
+Finally, launch the server with:
+node server
+
+and you can test it with:
+curl http://localhost:3000
+
+/* Request/Response validation and hooks
+---------------------------------------------------- */
+もちろん、Fastifyはこれ以上のことができます。
+例えば、JSON Schemaを使った入出力の検証を簡単に行うことができ、
+ハンドラーが実行される前に特定の操作を行うことができます。
+
+const fastify = require('fastify')({ logger: true })
+
+fastify.route({
+  method: 'GET',
+  url: '/',
+  schema: {
+    // request needs to have a querystring with a `name` parameter
+    querystring: {
+      name: { type: 'string' }
+    },
+    // the response needs to be an object with an `hello` property of type 'string'
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          hello: { type: 'string' }
+        }
+      }
+    }
+  },
+  // this function is executed for every request before the handler is executed
+  preHandler: async (request, reply) => {
+    // E.g. check authentication
+  },
+  handler: async (request, reply) => {
+    return { hello: 'world' }
+  }
+})
+
+const start = async () => {
+  try {
+    await fastify.listen(3000)
+  } catch (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
+}
+start()
+
+/* TypeScript Support
+---------------------------------------------------- */
+Fastify は typings ファイルと共に出荷されていますが、
+使用している Node.js のバージョンによっては @types/node をインストールする必要があります。
+以下の例では、httpサーバーを作成しています。
+我々は、使用されている我々のhttpのバージョンのための関連するタイピングを渡します。
+型を渡すことで、ルートの基礎となるhttpオブジェクトに正しく型付けされたアクセスを得ることができます。
+http2の場合は、<http2.Http2Server, http2.Http2ServerRequest, http2.Http2ServerResponse>とします。
+httpsの場合は、Serverの代わりにhttp2.Http2SecureServerまたはhttp.SecureServerを渡します。
+これにより、サーバーハンドラー内で、http.ServerResponseを正しいタイプのreply.resで受け取ることができます。
+
+import Fastify, { FastifyInstance, RouteShorthandOptions } from 'fastify'
+import { Server, IncomingMessage, ServerResponse } from 'http'
+
+const server: FastifyInstance = Fastify({})
+
+const opts: RouteShorthandOptions = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          pong: {
+            type: 'string'
+          }
+        }
+      }
+    }
+  }
+}
+
+server.get('/ping', opts, async (request, reply) => {
+  return { pong: 'it worked!' }
+})
+
+const start = async () => {
+  try {
+    await server.listen(3000)
+
+    const address = server.server.address()
+    const port = typeof address === 'string' ? address : address?.port
+
+  } catch (err) {
+    server.log.error(err)
+    process.exit(1)
+  }
+}
+start()
+
+ドキュメントでは、Fastifyが提供するすべての機能について詳しく説明しています。
