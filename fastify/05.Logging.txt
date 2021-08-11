@@ -1,0 +1,172 @@
+/* Logging
+------------------------------------------------------------ */
+ロギングはデフォルトでは無効になっていますが、 
+{ logger: true } 
+または 
+{ logger: {level: 'info' }
+を渡すことで有効にできます。なお、ロガーが無効になっている場合、実行時に有効にすることはできません。
+この目的のためにabstract-loggingを使用しています。
+
+Fastifyはパフォーマンスに重点を置いているため、ロガーとしてpinoを使用し、
+有効な場合のデフォルトのログレベルは「info」に設定されています。
+
+ロガーの有効化は非常に簡単です。
+@ ---------------------------------------------------------- @
+const fastify = require('fastify')({
+  logger: true
+})
+
+fastify.get('/', options, function (request, reply) {
+  request.log.info('Some info about the current request')
+  reply.send({ hello: 'world' })
+})
+@ ---------------------------------------------------------- @
+
+Fastify インスタンスから Pino インスタンスを使用することで、ルートハンドラの外側で新しいログをトリガーすることができます。
+fastify.log.info('Something important happened!');
+
+いくつかのオプションをロガーに渡したい場合は、Fastify に渡すだけです。
+すべての利用可能なオプションを Pino ドキュメントで見つけることができます。
+https://github.com/pinojs/pino/blob/master/docs/api.md#pinooptions-stream
+
+もし、ファイルの保存先を指定したい場合は
+@ ---------------------------------------------------------- @
+const fastify = require('fastify')({
+  logger: {
+    level: 'info',
+    file: '/path/to/file' // Will use pino.destination()
+  }
+})
+
+fastify.get('/', options, function (request, reply) {
+  request.log.info('Some info about the current request')
+  reply.send({ hello: 'world' })
+})
+@ ---------------------------------------------------------- @
+
+Pinoのインスタンスにカスタムストリームを渡したい場合は、ロガーオブジェクトにstreamフィールドを追加するだけです。
+
+@ ---------------------------------------------------------- @
+const split = require('split2')
+const stream = split(JSON.parse)
+
+const fastify = require('fastify')({
+  logger: {
+    level: 'info',
+    stream: stream
+  }
+})
+@ ---------------------------------------------------------- @
+
+デフォルトでは、Fastify はトラッキングを容易にするために、各リクエストに ID を追加します。
+もし、"request-id" ヘッダーが存在すれば、その値が使われ、そうでなければ、新しいインクリメンタル ID が生成されます。
+カスタマイズオプションについては、Fastify Factory requestIdHeader と Fastify Factory genReqId を参照してください。
+
+デフォルトのロガーは、req、res、err プロパティでオブジェクトをシリアライズする標準シリアライザのセットで構成されています。
+req で受け取るオブジェクトは Fastify Request オブジェクトで、res で受け取るオブジェクトは Fastify Reply オブジェクトです。
+この動作は、カスタムシリアライザを指定することでカスタマイズできます。
+
+@ ---------------------------------------------------------- @
+const fastify = require('fastify')({
+  logger: {
+    serializers: {
+      req (request) {
+        return { url: request.url }
+      }
+    }
+  }
+})
+@ ---------------------------------------------------------- @
+
+例えば、以下のような方法でレスポンスのペイロードとヘッダーをログに記録することができます（推奨されていませんが）。
+@ ---------------------------------------------------------- @
+const fastify = require('fastify')({
+  logger: {
+    prettyPrint: true,
+    serializers: {
+      res (reply) {
+        // The default
+        return {
+          statusCode: reply.statusCode
+        }
+      },
+      req (request) {
+        return {
+          method: request.method,
+          url: request.url,
+          path: request.path,
+          parameters: request.parameters,
+          // Including the headers in the log could be in violation
+          // of privacy laws, e.g. GDPR. You should use the "redact" option to
+          // remove sensitive fields. It could also leak authentication data in
+          // the logs.
+          headers: request.headers
+        };
+      }
+    }
+  }
+});
+@ ---------------------------------------------------------- @
+
+注： 子ロガーを作成する際にリクエストがシリアル化されるため、req メソッド内でボディをシリアル化することはできません。
+その時点では、ボディはまだ解析されていません。
+
+req.bodyを記録する方法を見る
+@ ---------------------------------------------------------- @
+app.addHook('preHandler', function (req, reply, done) {
+  if (req.body) {
+    req.log.info({ body: req.body }, 'parsed body')
+  }
+  done()
+})
+@ ---------------------------------------------------------- @
+
+Pino 以外のロガーは、このオプションを無視します。
+
+独自のロガー・インスタンスを提供することもできます。設定オプションを渡すのではなく、インスタンスを渡します。
+つまり、info、error、debug、fatal、warn、trace、childの各メソッドを持っていなければなりません。
+
+Example:
+@ ---------------------------------------------------------- @
+const log = require('pino')({ level: 'info' })
+const fastify = require('fastify')({ logger: log })
+
+log.info('does not have request information')
+
+fastify.get('/', function (request, reply) {
+  request.log.info('includes request information, but is the same logger instance as `log`')
+  reply.send({ hello: 'world' })
+})
+@ ---------------------------------------------------------- @
+
+現在のリクエストのロガーインスタンスは、ライフサイクルのあらゆる部分で利用可能です。
+
+
+/* Log Redaction
+------------------------------------------------------------ */
+Pinoは、記録されたログの特定のプロパティの値を不明瞭にする、オーバーヘッドの少ないログリダクションをサポートしています。
+例えば、セキュリティの観点から、HTTPヘッダからAuthorizationヘッダを除いたすべてのヘッダを記録したいとします。
+
+@ ---------------------------------------------------------- @
+const fastify = Fastify({
+  logger: {
+    stream: stream,
+    redact: ['req.headers.authorization'],
+    level: 'info',
+    serializers: {
+      req (request) {
+        return {
+          method: request.method,
+          url: request.url,
+          headers: request.headers,
+          hostname: request.hostname,
+          remoteAddress: request.ip,
+          remotePort: request.socket.remotePort
+        }
+      }
+    }
+  }
+})
+@ ---------------------------------------------------------- @
+
+詳しくは https://getpino.io/#/docs/redaction をご覧ください。

@@ -1,0 +1,95 @@
+/* Factory
+------------------------------------------------------------ */
+Fastify モジュールは、新しい Fastify サーバーインスタンスを作成するために使用されるファクトリ関数をエクスポートします。
+このファクトリ関数は、結果のインスタンスをカスタマイズするために使用されるオプションオブジェクトを受け入れます。
+このドキュメントでは、そのオプションオブジェクトで利用可能なプロパティについて説明します。
+
+http2
+trueの場合、Node.jsコアのHTTP/2モジュールがソケットのバインドに使用されます。
+Default: false
+
+https
+TLS用のサーバのリスニングソケットを設定するためのオブジェクトです。
+オプションは、Node.jsコアのcreateServerメソッドと同じです。このプロパティがNULLの場合、ソケットはTLS用に設定されません。
+このオプションは、http2オプションが設定されている場合にも適用されます。
+Default: null
+
+connectionTimeout
+サーバーのタイムアウトをミリ秒単位で定義します。このオプションの効果については、server.timeout プロパティのドキュメントを参照してください。
+serverFactoryオプションが指定されている場合、このオプションは無視されます。
+Default: 0 (no timeout)
+
+keepAliveTimeout
+サーバーのキープアライブ・タイムアウトをミリ秒単位で定義します。
+このオプションの効果については、server.keepAliveTimeout プロパティのドキュメントを参照してください。
+このオプションは、HTTP/1 が使用されている場合にのみ適用されます。
+また、serverFactoryオプションが指定されている場合、このオプションは無視されます。
+Default: 5000 (5 seconds)
+
+ignoreTrailingSlash
+Fastify は find-my-way を使ってルーティングを処理します。
+このオプションを true に設定すると、ルートの末尾のスラッシュが無視されます。
+このオプションは、結果として得られるサーバインスタンスのすべてのルート登録に適用されます。
+Default: false
+@ ---------------------------------------------------------- @
+const fastify = require('fastify')({
+  ignoreTrailingSlash: true
+})
+
+// registers both "/foo" and "/foo/"
+fastify.get('/foo/', function (req, reply) {
+  reply.send('foo')
+})
+
+// registers both "/bar" and "/bar/"
+fastify.get('/bar', function (req, reply) {
+  reply.send('bar')
+})
+@ ---------------------------------------------------------- @
+
+/* Instance
+ * Server Methods
+------------------------------------------------------------ */
+server
+fastify.server: Fastify ファクトリー関数によって返される Node コアサーバーオブジェクト。
+
+after
+現在のプラグインと、その中に登録されているすべてのプラグインのロードが終了したときに呼び出されます。
+これは常にfastify.readyメソッドの前に実行されます。
+@ ---------------------------------------------------------- @
+fastify
+  .register((instance, opts, done) => {
+    console.log('Current plugin')
+    done()
+  })
+  .after(err => {
+    console.log('After current plugin')
+  })
+  .register((instance, opts, done) => {
+    console.log('Next plugin')
+    done()
+  })
+  .ready(err => {
+    console.log('Everything has been loaded')
+  })
+@ ---------------------------------------------------------- @
+
+after()が関数なしで呼ばれた場合は、Promiseを返します。
+@ ---------------------------------------------------------- @
+fastify.register(async (instance, opts) => {
+  console.log('Current plugin')
+})
+
+await fastify.after()
+console.log('After current plugin')
+
+fastify.register(async (instance, opts) => {
+  console.log('Next plugin')
+})
+
+await fastify.ready()
+
+console.log('Everything has been loaded')
+@ ---------------------------------------------------------- @
+
+
