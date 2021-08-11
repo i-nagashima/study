@@ -1,5 +1,5 @@
 /* バックアップ
- * ------------------------------------------------------/
+------------------------------------------------------------ */
 // mysqldump（ホット, 論理, フルバックアップ）
 $ mysqldump --single-transaction --master-data=2 --events --routines --triggers --hex-blob ¥
   --host=192.168.1.1 --port=3306 --user=root --password [データベース名] > /path/backup.dump
@@ -11,7 +11,7 @@ $ mysqldump --single-transaction --master-data=2 --events --routines --triggers 
 # --hex-blob : バイナリデータ型のカラムを利用している場合は必要
 
 /* リストア
- * ------------------------------------------------------/
+------------------------------------------------------------ */
 // mysqldump からリストア
 $ mysql --user=root --password --excute="RESET MASTER"
 $ mysql --user=root --password [データベース名] < /path/backup.dump

@@ -1,0 +1,47 @@
+/* docker debian ()
+------------------------------------------------------------ */
+$ docker run --name debian-buster \
+-v ~/Desktop/fastify_test:/root/fastify_test \
+-p 3000:3000 \
+-it \
+debian:buster /bin/bash
+
+# 停止
+$ docker stop debian-buster
+# 削除
+$ docker rm debian-buster
+# リスタート
+$ docker restart debian-buster
+$ docker exec -it debian-buster /bin/bash
+
+/* node install
+------------------------------------------------------------ */
+$ apt update
+
+# vim, curl
+$ apt install vim -y
+$ apt install curl -y
+
+# node (nvm)
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+$ source ~/.bashrc
+$ nvm install stable --lastest-npm
+$ nvm alias default stable
+$ nvm cache clear
+
+# yarn
+$ npm install -g yarn
+
+/* project create
+------------------------------------------------------------ */
+##$ mkdir ~/fastify_test
+$ cd ~/fastify_test
+$ yarn init -y
+
+
+/* fastify Quick start
+------------------------------------------------------------ */
+$ yarn add fastify
+
+# server.jsを作成
+
