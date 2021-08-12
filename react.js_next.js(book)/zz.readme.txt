@@ -1,0 +1,14 @@
+/* Create React App
+------------------------------------------------------------ */
+Reactのプロジェクトを作成する
+
+# npxの場合
+$ npx create-react-app <プロジェクト>
+# npmの場合
+$ npm init react-app <プロジェクト>
+
+/* React Developer Tools
+------------------------------------------------------------ */
+Chrome
+https://chrome.google.com/webstore
+

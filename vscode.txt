@@ -49,6 +49,9 @@ command + /
 # ブロックコメント
 option + shift + a
 
+# カーソル行の下に空行を挿入
+command + enter
+
 # 定義元の参照
 F12
 # ピーク(小窓)で定義元を参照
@@ -86,6 +89,29 @@ Mac : command + shift + x
 コード整形ツール
 設定 : Format On Save
 .vscodeができる
+
+https://qiita.com/takeshisakuma/items/bbb2cd2f1c65de70e363
+.prettierrc
+{
+  // 折り返す行の長さを指定 デフォルトは80
+  "printWidth": 120,
+  // インデントのスペースの数を指定
+  "tabWidth": 2,
+  // ダブルクォートの代わりにシングルクォートを使用
+  "singleQuote": true,
+  // 末尾のカンマの設定 末尾にカンマをつけない(デフォルト)
+  "trailingComma": "none",
+  // ステートメントの最後にセミコロンを追加
+  "semi": false,
+  // 使用するパーサーを指定
+  // ※Prettierは入力ファイルパスから自動的に推測するのでこの設定を変更する必要ない
+  "parser": "typescript"
+
+  // JSXでダブルクォートの代わりにシングルクォートを使用 ダブルクォートを使う(デフォルト) 
+  "jsxSingleQuote": true
+  // オブジェクトリテラルの角かっこの内側にスペースを入れる スペースを入れる(デフォルト)
+  "bracketSpacing": true
+}
 
 /* gitignore : 拡張機能
 ------------------------------------------------------------ */
