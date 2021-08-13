@@ -1,12 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+//import App from './App';
+//import App from './_3-11_App';
+// import App from './_3-12_App';
+// import App from './_3-16_App';
+// import App from './_3-17_App';
+// import App from './_3-19_App';
+// import App from './_3-20_App';
+import App from './_3-22_App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    {/* <App title='App' message='This is App Component' /> */}
+    {/* <App msg='Hello App.' /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

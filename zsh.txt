@@ -64,7 +64,10 @@ export LANG=ja_JP.UTF-8
 /* ~/.zshrc 設定例
 ------------------------------------------------------------ */
 # すっきりしたプロンプト表示 (不要ならコメントアウト)
-PROMPT='%~ %# '
+# %~ ホームディレクトリからのパス
+# %c カレントディレクトリ
+#PROMPT='%~ %# '
+PROMPT='%c %# '
 
 # zsh-completions の設定。コマンド補完機能
 autoload -U compinit && compinit -u

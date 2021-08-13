@@ -53,6 +53,11 @@ const result20 = add10(10);  // 20
 let result = (function(仮引数) {
     return 戻り値;
 })(実引数);
+
 (function() {
     console.log(hoge);
+})();
+
+(() => {
+    console.log(hoge); 
 })();
