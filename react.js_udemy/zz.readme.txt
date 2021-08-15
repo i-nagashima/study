@@ -1,0 +1,8 @@
+/* Create React App
+------------------------------------------------------------ */
+Reactのプロジェクトを作成する
+
+# npxの場合
+$ npx create-react-app <プロジェクト>
+# npmの場合
+$ npm init react-app <プロジェクト>
