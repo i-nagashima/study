@@ -117,6 +117,66 @@ class Person {
 }
 Person.hello();
 
+/* private, public
+---------------------------------------------------- */
+class Person {
+
+    // private フィールド
+    #privateField = 1;
+    // public フィールド
+    publicField = 2;
+
+    // static な private フィールド
+    static #staticPrivateField = 3;
+    // static な public フィールド
+    static staticPublicField = 4;
+
+    // コンストラクタ
+    constructor(name, age) {
+        // フィールドを初期化できる (フィールドになくても → その場合はpublic？)
+        #privateField = 1;
+        publicField = 2;
+        hogehogeField = 3;
+    }
+
+    // private getter
+    get #computed() {
+        return this.#privateField;
+    }
+    // public getter
+    get computed() {
+        return this.publicField;
+    }
+
+    // private setter
+    set #computed(value) {
+        this.#privateField = value;
+    }
+    // public setter
+    set computed(value) {
+        this.publicField = value;
+    }
+
+    // private メソッド
+    #privateMethod() {
+
+    }
+    // public メソッド
+    publicMethod() {
+
+    }
+
+    // static な private メソッド
+    static #staticPrivateMethod() {
+
+    }
+    // static な public メソッド
+    static staticPublicMethod() {
+
+    }
+}
+
+
 /* チェーンメソッド
 ---------------------------------------------------- */
 一つのインスタンスに対して連続でメソッドを呼ぶ。
