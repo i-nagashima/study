@@ -1,5 +1,7 @@
 .DS_Store
 .vscode/
-react.js_next.js(book)/react_app/node_modules
-react.js_next.js(book)/react_app/build
+react.js_next.js_book/react_app/node_modules
+react.js_next.js_book/react_app/build
+react.js_udemy/react_app/node_modules
+react.js_udemy/react_app/build
 
