@@ -1,0 +1,120 @@
+/* Inline Styles
+------------------------------------------------------------ */
+export const InlineStyle = () => {
+  const hogeStyle = {
+    border: 'solid 1px #392eff',
+    borderRadius: '20px',
+  };
+  return (
+    <div style={hogeStyle}></div>
+  );
+}
+
+/* CSS Modules
+------------------------------------------------------------ */
+yarn add node-sass   # sassを使用する
+コンポーネントに対応するCSSファイルを作成する
+CssModules.jsx　＝　CssModules.module.scss
+
+# CssModules.module.scss
+.container {
+  border: solid 1px #392eff;
+  border-radius: 20px;
+}
+
+# CssModules.jsx
+import classes from './CssModules.module.scss'
+export const CssModules = () => {
+  return (
+    <div className={classes.container}></div>
+  );
+}
+
+/* Styled JSX
+------------------------------------------------------------ */
+yarn add styled-jsx   # styled-jsxを使用する
+コンポーネントの中でスタイルタグを書いていく
+
+# StyledJsx.jsx
+export const StyledJsx = () => {
+  return (
+    <>
+      <div className='container'></div>
+      <style jsx='true'>{`
+        .container {
+          border: solid 1px #392eff;
+          border-radius: 20px;
+        }
+      `}</style>
+    </>
+  );
+}
+※疑似要素は使えない
+※next.jsで標準に入っている
+
+/* styled components
+------------------------------------------------------------ */
+yarn add styled-components  # styled-componentsを使う
+スタイルをコンポーネントのように扱う
+
+# StyledComponents.jsx
+import styled from 'styled-components';
+export const StyledComponents = () => {
+  return (
+    <Container>
+      <div></div>
+    </Container>
+  );
+}
+
+const Container = styled.div`
+  .container {
+    border: solid 1px #392eff;
+    border-radius: 20px;
+  }
+`;
+
+※スタイルのコンポーネントか普通のコンポーネントか区別がつかない
+※Container → SContainer のようにSをつけるなど工夫が必要かな
+
+/* Emotion
+------------------------------------------------------------ */
+@emotion/react と @emotion/styled の2種類がある
+
+yarn add @emotion/react
+yarn add @emotion/styled
+
+# Emotion.jsx
+/** @jsx jsx */   # おまじない
+import { jsx, css } from '@emotion/react';
+import styled from '@emotion/styled';
+
+export const Emotion = () => {
+  # @emotion/react やり方その1
+  const containerStyle_1 = css`
+    .container {
+      border: solid 1px #392eff;
+      border-radius: 20px;
+    }
+  `;
+  # @emotion/react やり方その2
+  const containerStyle_2 = css({
+    border: 'solid 1px #392eff',
+    borderRadius: '20px'
+  });
+
+  return (
+    <div css={containerStyle_1}></div>
+    <div css={containerStyle_2}></div>
+    <Container>
+      <div></div>
+    </Container>
+  );
+}
+
+# @emotion/styled
+const Container = styled.div`
+  border: solid 1px #392eff;
+  border-radius: 20px;
+`;
+

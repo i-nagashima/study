@@ -1,0 +1,48 @@
+/* 再レンダリングが起きる条件
+------------------------------------------------------------ */
+# どんなとき？
+・stateが更新されたコンポーネントは再レンダリング
+・propsが変更されたコンポーネントは再レンダリング
+・再レンダリングされたコンポーネント配下の子要素は再レンダリング
+
+/* レンダリング最適化 (memo)
+------------------------------------------------------------ */
+# 指定したpropsが変更された場合のみレンダリング
+# memoを使ってアロー関数を囲ってしまう
+import { memo } from 'react';
+const ChildArea = memo((props) => {
+  const { open } = props;
+});
+※子コンポーネントでprop(ステート)を渡すときはmemoを使ったほうがいい
+※複数のコンポーネントを使っていたり、今後肥大化する場合はなおさら
+
+/* レンダリング最適化 (useCallback)
+------------------------------------------------------------ */
+# 親コンポーネントから子コンポーネントのpropsに関数を渡してやる
+# 親コンポーネントの関数定義でuseCallbackを
+import { useCallback } from 'react';
+const App = () => {
+  const { open, setOpen } = useState(false);
+  const onClick = useCallback(() => setOpen(false), []);
+
+  return (
+    <>
+      <ChildArea onClick={onClick} />
+    </>
+  );
+}
+
+/* 変数のmemo化
+------------------------------------------------------------ */
+# memo や useCallback と同じように変数も memo化できる
+import { useMemo } from 'react';
+const App = () => {
+  const tmp = useMemo(() => 1 + 2, []);
+  return (
+    <>
+      <ChildArea />
+    </>
+  );
+}
+※複雑な計算とかして値を生成したときとか使う
+
