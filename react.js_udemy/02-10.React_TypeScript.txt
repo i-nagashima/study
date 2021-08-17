@@ -1,0 +1,7 @@
+/* Create React App TypeScript
+------------------------------------------------------------ */
+React x TypeScriptのプロジェクトを作成する
+
+# npxの場合
+$ npx create-react-app <プロジェクト> --template typescript
+
