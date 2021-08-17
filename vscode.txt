@@ -88,7 +88,12 @@ Mac : command + shift + x
 ------------------------------------------------------------ */
 コード整形ツール
 設定 : Format On Save
-.vscodeができる
+※これだけではダメで
+setting.json (ユーザー)
+setting.json (ワークスペース)
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+こうする
 
 https://qiita.com/takeshisakuma/items/bbb2cd2f1c65de70e363
 .prettierrc
@@ -121,4 +126,12 @@ https://qiita.com/takeshisakuma/items/bbb2cd2f1c65de70e363
 ------------------------------------------------------------ */
 「コミット単位でのファイル比較」や「最新のコミット内容とそのコミッター表示」など
 なんかよくわからない
+
+/* Auto Import : 拡張機能
+------------------------------------------------------------ */
+import を自動で挿入してくれる
+setting.json (ワークスペース)
+  "filesToScan": "**/*.{js, jsx, ts, tsx}",
+  "autoComplete": true
+
 
