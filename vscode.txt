@@ -87,7 +87,11 @@ Mac : command + shift + x
 /* Prettier : 拡張機能
 ------------------------------------------------------------ */
 コード整形ツール
-設定 : Format On Save
+
+設定 : Format On Save (ユーザー)
+設定 : Format On Save (ワークスペース)
+Editor: Format On Save
+ チェックをつける
 ※これだけではダメで
 setting.json (ユーザー)
 setting.json (ワークスペース)
@@ -95,6 +99,12 @@ setting.json (ワークスペース)
   "editor.defaultFormatter": "esbenp.prettier-vscode"
 こうする
 
+設定 : Prettier: Jsx Single Quote (ユーザー)
+設定 : Prettier: Single Quote (ワークスペース)
+チェックをつける
+※検索で「singleQuote」にするとでてくる
+
+prettierrcを使う場合
 https://qiita.com/takeshisakuma/items/bbb2cd2f1c65de70e363
 .prettierrc
 {
@@ -130,8 +140,10 @@ https://qiita.com/takeshisakuma/items/bbb2cd2f1c65de70e363
 /* Auto Import : 拡張機能
 ------------------------------------------------------------ */
 import を自動で挿入してくれる
-setting.json (ワークスペース)
-  "filesToScan": "**/*.{js, jsx, ts, tsx}",
-  "autoComplete": true
+
+設定 : Autoimport (ユーザー)
+設定 : Autoimport (ワークスペース)
+Autoimport: Files To Scan
+ **/*.{js, jsx, ts, tsx}
 
 

@@ -1,9 +1,17 @@
+# 共通
 .DS_Store
 .vscode/
+
+# react.js_next.js_book
 react.js_next.js_book/react_app/node_modules
 react.js_next.js_book/react_app/build
+# react.js_udemy
 react.js_udemy/react_app/node_modules
 react.js_udemy/react_app/build
-react.js_udemy/02-05_react_router/node_modules
-react.js_udemy/02-05_react_router/build
+react.js_udemy/01-06_react_app/node_modules
+react.js_udemy/01-06_react_app/build
+react.js_udemy/02-03_react_app/node_modules
+react.js_udemy/02-03_react_app/build
+react.js_udemy/02-05_react_app/node_modules
+react.js_udemy/02-05_react_app/build
 
