@@ -33,6 +33,7 @@ export const CssModules = () => {
 /* Styled JSX
 ------------------------------------------------------------ */
 yarn add styled-jsx   # styled-jsxを使用する
+Next.jsに標準で入っている
 コンポーネントの中でスタイルタグを書いていく
 
 # StyledJsx.jsx
@@ -55,6 +56,7 @@ export const StyledJsx = () => {
 /* styled components
 ------------------------------------------------------------ */
 yarn add styled-components  # styled-componentsを使う
+人気がある
 スタイルをコンポーネントのように扱う
 
 # StyledComponents.jsx
