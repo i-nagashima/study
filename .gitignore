@@ -31,3 +31,6 @@ react.js_udemy/02-10_react_app/build
 react.js_udemy/02-11_react_app/node_modules
 react.js_udemy/02-11_react_app/build
 
+# typescript_udemy
+typescript_udemy/node_modules
+typescript_udemy/*.js

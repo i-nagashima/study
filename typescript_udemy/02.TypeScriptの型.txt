@@ -1,0 +1,176 @@
+/* boolean number string
+------------------------------------------------------------ */
+# boolean
+let hasValue: boolean = true;
+
+# number
+let count: number = 10;
+let float: number = 3.14;
+let negative: number = -0.12;
+
+# string
+let single: string = 'hello';
+let double: string = "hello";
+let back: string = `hello`;
+
+/* 型注釈 と 型推論
+------------------------------------------------------------ */
+型注釈
+: string 
+型を指定する
+
+型推論
+型を指定しなくても予想（自動で推測）して型をつける
+
+どちらを使用するか？
+基本的には型推論をする。
+型注釈は型推論できないときにする。
+例えば、変数に初期値を入れないとき
+let hello: string;
+
+/* オブジェクトに型を付ける方法
+------------------------------------------------------------ */
+型注釈する必要はない。型推論を使う
+
+型注釈する場合はこんな感じ
+const person: {
+  name: string;
+  age: number;
+} = {
+  name: 'Jack',
+  age: 21
+}
+
+/* 配列に型を付ける (Array)
+------------------------------------------------------------ */
+型注釈、型推論どちらでもいい
+const fruits: string[] = ['Apple', 'Banana', 'Grape'];
+複数の型の場合
+const fruits: any = ['Apple', 'Banana', 'Grape', 1];
+
+/* Tuple型
+------------------------------------------------------------ */
+決まった内容の型を使うときに使う
+型注釈をしないといけない
+const book: [string, number, boolean] = ['business', 1500, false];
+
+/* Enum型 (列挙型)
+------------------------------------------------------------ */
+enum CoffeeSize {
+  SHORT,
+  TALL = 100,
+  GRANDE,
+  VENTI
+}
+
+/* any型
+------------------------------------------------------------ */
+なんでも入る
+let anything: any = true;
+anything = 'hello';
+※anyはなるべく使わないようにする
+
+/* Union型
+------------------------------------------------------------ */
+複数の型を入れられる
+let unionType: number | string = 10;
+unionType = 'hello';
+配列の場合
+let unionTypes: (number | string)[] = [21, 'hello'];
+
+/* Literal型
+------------------------------------------------------------ */
+特定の決まった型
+※Enumのほうがわかりやすい
+const apple: 'apple' = 'apple';
+実はconstを使うとLiteral型になる
+
+let clothSize: 'small' | 'medium' | 'large';
+const cloth: {
+  color: string;
+  size: 'small' | 'medium' | 'large';
+} = {
+  color: 'white',
+  size = 'medium'
+}
+
+/* typeエイリアス
+------------------------------------------------------------ */
+型をつくる
+type ClothSize = 'small' | 'medium' | 'large';
+使う場合
+let clothSize; ClothSize = 'large';
+const cloth: {
+  color: string;
+  size: ClothSize;
+} = {
+  color: 'white',
+  size = 'medium'
+}
+
+/* 関数に型をつける
+------------------------------------------------------------ */
+引数に戻り値に型をつける
+function add(num1: number, num2: number): number {
+  return num1 + num2;
+}
+※戻り値には型推論がつく。でも型注釈はしたほうがいい。
+※引数には型推論はつかないので必ず指定する。
+
+/* 関数の戻り値にvoid型を使う
+------------------------------------------------------------ */
+function sayHello(): void {
+  console.log();
+}
+
+/* 関数を保持する変数に型を付ける (関数式の型)
+------------------------------------------------------------ */
+function add(num1: number, num2: number): number {
+  return num1 + num2;
+}
+const anotherAdd: (n1: number, n2: number) => number = add;
+
+※前、後どちらにも型注釈できるが前がよい
+const anotherAdd: (n1: number, n2: number) => number = function (num1, num2) {
+  return num1 + num2;
+}
+
+const doubleNumber: (n: number) => number = (number) => {
+  return number * 2;
+}
+
+/* callback関数の型
+------------------------------------------------------------ */
+function doubleAndHandle(cb: (num: number) => number); void {
+  const aa = cb(num);
+  console.log(aa);
+}
+doubleAndHandle((num) => {
+  return num * 2;
+});
+
+/* unknown型
+------------------------------------------------------------ */
+anyより少し厳しい型
+let unknownInput: unknown;
+let text: string;
+unknownInput = true;
+text = unknownInput;
+
+なんでも入れることはできるが、使うときには注意をする。
+上記では
+text = unknownInput;
+はエラーになる。
+※anyはエラーにならない。
+
+/* never型
+------------------------------------------------------------ */
+決して何も返さない
+結構新しい型になる。まぁ今は使わないかな。
+function error(message: string): never {
+  // throwとか
+  throw new Error(message);
+  // 永久ループとか
+  while (true) {}
+}
+
