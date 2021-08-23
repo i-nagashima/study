@@ -1,7 +1,13 @@
 /* インストール
 ------------------------------------------------------------ */
-$ yarn add typescript
+$ yarn global add typescript
+※globalの場合PATHを通す必要あり
+
+$ yarn add --dev typescript
 
 /* コンパイル
 ------------------------------------------------------------ */
 $ tsc index.ts
+※globalの場合PATHを通す必要あり
+
+$ npx tsc index.ts

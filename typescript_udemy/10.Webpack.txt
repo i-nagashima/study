@@ -1,0 +1,224 @@
+/* ESモジュールを使ってファイルを分割する
+------------------------------------------------------------ */
+Webpackを使わない場合は import は xx.js にする
+tsconfig.json
+ フロント "module": "ES6"
+ バック　 "module": "commonjs"
+
+.ts
+export class B
+
+import { A } from './A.js'
+export class A
+
+index.html
+<script src="dist/main.js" type="module"></script>
+※IEは使えない使えない使えない使えない使えない使えないIE
+
+モジュールはhttpでjsを取得するのでhttpサーバが必要
+
+/* Webpackを使う理由
+------------------------------------------------------------ */
+・モダンでないブラウザでモジュールを使うため
+　モジュールはIEで使えない。。。
+・http通信を一括で行うため
+　モジュールで分割しても分割分http通信が発生する
+・コードの最適化のため
+・プラグインの追加
+・いろんな種類のファイルを扱うため
+・HMR付きのローカルサーバを使うため
+
+/* Webpackをインストール
+------------------------------------------------------------ */
+インストール
+$ yarn add --dev webpack webpack-cli
+
+package.json
+"scripts": {
+  "build": "webpack"
+}
+
+webpack.config.js を作成
+const path = require('path');
+module.exports = {
+  entry: './dist/main.js'
+  output: {
+    filename: 'bundle.js', // ハッシュ値付き '[contenthash]bundle.js',
+    path: path.resolve(__dirname, dist)
+  }
+}
+
+index.html
+<script src="dist/bundle.js" defer></script>
+
+/* source map
+------------------------------------------------------------ */
+webpack.config.js
+const path = require('path');
+module.exports = {
+  entry: './dist/main.js'
+  output: {
+    filename: 'bundle.js', // ハッシュ値付き '[contenthash]bundle.js',
+    path: path.resolve(__dirname, dist)
+  },
+  devtool: 'inline-source-map'
+}
+
+/* ts-loader
+------------------------------------------------------------ */
+typescriptからbundle.jsを直接つくる
+
+インストール
+$ yarn add --dev ts-loader typescript
+
+webpack.config.js
+const path = require('path');
+module.exports = {
+  entry: './src/main.ts'  // ソースのtsにする
+  output: {
+    filename: 'bundle.js', // ハッシュ値付き '[contenthash]bundle.js',
+    path: path.resolve(__dirname, dist)
+  },
+  devtool: 'inline-source-map'
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      use: 'ts-loader',
+      exclude: /node_modules/
+    }]
+  },
+  resolve: {
+    extensions: ['.ts', 'js']
+  }
+}
+
+import { A } from './A.js'
+※拡張子はいらない。
+
+これでWebpackからtscをやってくれる。
+じゃぁ、tsconfig.jsonはどうなるの？
+outDirとかは意味がなくなる。
+でも必要（効果がある）なものもある。
+
+/* webpack-dev-server
+------------------------------------------------------------ */
+tscのwatchモードみたいなもの
+
+インストール
+$ yarn add --dev webpack-dev-server
+
+package.json
+"scripts": {
+  "build": "webpack",
+  "start": "webpack-server"
+}
+
+webpack-dev-serverを実行するとサーバの内部でbundle.jsが作られる。
+その場所は/になってしまうのでoutput:publicPathで出力先を変更する。
+
+webpack.config.js
+const path = require('path');
+module.exports = {
+  entry: './src/main.ts'  // ソースのtsにする
+  output: {
+    filename: 'bundle.js', // ハッシュ値付き '[contenthash]bundle.js',
+    path: path.resolve(__dirname, dist),
+    publicPath: '/dist/'
+  },
+  devtool: 'inline-source-map'
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      use: 'ts-loader',
+      exclude: /node_modules/
+    }]
+  },
+  resolve: {
+    extensions: ['.ts', 'js']
+  }
+}
+
+/* 本番用、開発用
+------------------------------------------------------------ */
+本番用 (webpack.prod.js)
+const path = require('path');
+module.exports = {
+  mode: 'production',
+  entry: './src/main.ts'  // ソースのtsにする
+  output: {
+    filename: 'bundle.js', // ハッシュ値付き '[contenthash]bundle.js',
+    path: path.resolve(__dirname, dist),
+  },
+  devtool: 'inline-source-map'
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      use: 'ts-loader',
+      exclude: /node_modules/
+    }]
+  },
+  resolve: {
+    extensions: ['.ts', 'js']
+  }
+}
+
+開発用 (webpack.dev.js)
+const path = require('path');
+module.exports = {
+  mode: 'development',
+  entry: './src/main.ts'  // ソースのtsにする
+  output: {
+    filename: 'bundle.js', // ハッシュ値付き '[contenthash]bundle.js',
+    path: path.resolve(__dirname, dist),
+    publicPath: '/dist/'
+  },
+  devtool: 'inline-source-map'
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      use: 'ts-loader',
+      exclude: /node_modules/
+    }]
+  },
+  resolve: {
+    extensions: ['.ts', 'js']
+  }
+}
+
+prod と devをコマンドで使い分ける
+package.json
+"scripts": {
+  "build": "webpack --config webpack.prod.js",
+  "start": "webpack-server --config webpack.dev.js"
+}
+
+/* プラグインを使う
+------------------------------------------------------------ */
+例えば、clean-wabpack-plugin
+
+本番用 (webpack.prod.js)
+const path = require('path');
+const { CleanWebpackPlugin } require('clan-webpack-plugin')
+module.exports = {
+  mode: 'production',
+  entry: './src/main.ts'  // ソースのtsにする
+  output: {
+    filename: 'bundle.js', // ハッシュ値付き '[contenthash]bundle.js',
+    path: path.resolve(__dirname, dist),
+  },
+  devtool: 'inline-source-map'
+  module: {
+    rules: [{
+      test: /\.ts$/,
+      use: 'ts-loader',
+      exclude: /node_modules/
+    }]
+  },
+  resolve: {
+    extensions: ['.ts', 'js']
+  },
+  plugins: [
+    new CleanWebpackPlugin()
+  ]
+}
+

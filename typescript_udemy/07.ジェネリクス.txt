@@ -1,0 +1,46 @@
+/* ジェネリクスとは
+------------------------------------------------------------ */
+型を引数として受け取ることができる
+function copy<T>(value: T): T {
+  return value;
+}
+copy<string>('hello');
+
+何個でもとれる
+function copy<T, T2, T3>(value: T): T {
+
+/* 型パラメータに制約をつける
+------------------------------------------------------------ */
+function copy<T extends { name: string }>(value: T): T {
+  return value;
+}
+
+/* Keyof演算子
+------------------------------------------------------------ */
+むずい
+
+/* Classにジェネリクス
+------------------------------------------------------------ */
+class LightDatabase<T extends string | number | boolean> {
+  private data: T[] = [];
+  add(item: T) {
+    this.data.push(item);
+  }
+}
+const stringLightDatabase = new LightDatabase<string>();
+
+/* Interfaceにジェネリクス
+------------------------------------------------------------ */
+Interface TmpDatabase<T> {
+  id: number;
+  data: T[];
+}
+const tmpDatabase: TmpDatabase<number> = {
+  id: 3,
+  data: [32]
+}
+
+/* 内蔵されているジェネリクス型であるUtility型
+------------------------------------------------------------ */
+ドキュメント見ろ
+

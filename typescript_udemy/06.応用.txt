@@ -1,0 +1,78 @@
+/* インターセクション型 (AかつB)
+------------------------------------------------------------ */
+typeでやる場合
+type Engineer = {
+  name: string;
+  role: string;
+}
+type Blogger = {
+  name: string;
+  follower: number;
+}
+type EngineerBlogger = Enginner & Blogger;
+
+interfaceでやる場合
+interface Engineer {
+  name: string;
+  role: string;
+}
+interface Blogger {
+  name: string;
+  follower: number;
+}
+interface EngineerBlogger extends Engineer, Blogger { }
+
+/* typeof, in, instanceof
+------------------------------------------------------------ */
+typeof
+標準的な型しか使えない
+if (typeof xxx === 'string')
+
+in
+オブジェクトに'foo'があるか
+if ('foo' in xxx)
+
+instanceof
+オブジェクトの型がそれか(クラス)
+if (yyy instalce of xxx)
+
+/* タグ付きUnion
+------------------------------------------------------------ */
+class Doc {
+  kind: 'doc' = 'doc'
+}
+これで型を定義する
+
+/* 型アサーション
+------------------------------------------------------------ */
+getElementById は HTMLElement | null になる
+本当は HTMLInputElement がほしい
+const input = document.getElementById('input');
+
+型アサーション その１
+const input = <HTMLInputElement>document.getElementById('input');
+型アサーション その２
+const input = document.getElementById('input') as HTMLInputElement;
+
+jsxを使用する場合は その２ がよい
+
+/* !(Non-null assertion operator)
+------------------------------------------------------------ */
+これはnullじゃないと言い切る
+const input = document.getElementById('input')!;
+
+/* 関数のオーバーロード
+------------------------------------------------------------ */
+function toUpperCase(x: string): string;
+function toUpperCase(x: number): number;
+function toUpperCase(x: string | number): string | number {
+  if (typeof x === 'string') {
+    return x.toUpperCase();
+  }
+  return x;
+}
+const upperHello = toUpperCase('Hello');
+※upperHelloはstring | numberとなってしまうので
+上にオーバーロードを記述する
+
+

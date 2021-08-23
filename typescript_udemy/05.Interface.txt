@@ -1,0 +1,66 @@
+/* 使い方
+------------------------------------------------------------ */
+interfact Human {
+  name: string;
+  age: number;
+  greeting(message: string): void;
+}
+const human: Human = {
+  name: 'Quill',
+  age: 38,
+  greeting(message: string): void {
+    console.log();
+  }
+}
+
+/* impliments (クラス)
+------------------------------------------------------------ */
+interfact Human {
+  name: string;
+  age: number;
+  greeting(message: string): void;
+}
+class Developer impliments Human {
+  constructor(public name: string, public age: number) {}
+  greeting(message: string): void {
+
+  }
+}
+
+/* Interfaceのオブジェクトで使う
+------------------------------------------------------------ */
+Human (Interface)を使う
+const developer: Human = new Developer('John', 20);
+
+/* Interfaceの継承
+------------------------------------------------------------ */
+interface Nameable {
+  name: string;
+}
+interface Human extends Nameable {
+  age: number;
+  greeting(msg: string): void;
+}
+
+/* Interfaceで関数の型
+------------------------------------------------------------ */
+ほぼ使わない
+interface addFunc {
+  (num1: number, num2: number): number;
+}
+const addFunc: addFunc;
+addFunc = (n1: number, n2: number) => {
+  return n1 + n2;
+}
+
+/* ? を使って、あってもないくてもよいオブジェクト
+------------------------------------------------------------ */
+フィールドとメソッドにつけることができる
+interfact Human {
+  name: string;
+  age?: number;
+}
+class Developer impliments Human {
+  constructor(public name: string, public age?: number) {}
+}
+

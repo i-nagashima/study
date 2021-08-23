@@ -1,0 +1,100 @@
+/* watchモード
+------------------------------------------------------------ */
+$ tsc xxx.ts -w
+
+/* --initでtsconfig.json
+------------------------------------------------------------ */
+$ tsc --init
+
+/* includeとexclude
+------------------------------------------------------------ */
+特定のファイルを含む
+"include": {
+  "index.ts",
+  "*.spec.ts",
+  "**/compiler.ts"
+}
+
+特定のファイルを除く
+"exclude": {
+  "compiler.ts",
+  "*.spec.ts",
+  "**/compiler.ts",
+  "node_modules"  // デフォルトでは入っているが明示した場合は記述する必要あり
+}
+
+絶対パスで指定する
+"files": {
+  "/tmp/compiler.ts"
+}
+
+/* target
+------------------------------------------------------------ */
+指定しない場合は es3
+
+/* lib
+------------------------------------------------------------ */
+まぁ指定しないよな
+es6 の場合
+"lib": [
+  "ES6",
+  "DOM",
+  "DOM.Iterable",
+  "ScriptHost"
+]
+
+/* allorJs, checkJs, jsx, declaration, declarationMap
+------------------------------------------------------------ */
+allorJs
+ JavaScriptファイルをコンパイルする
+checkJs
+ allowJsと一緒に
+jsx
+ Reactで使う
+declaration
+ .d.ts（型定義ファイル） を作る
+declarationMap
+ .d.ts（型定義ファイル） を作る
+
+/* sourceMap
+------------------------------------------------------------ */
+ブラウザでTypeScriptを見るために使う
+
+/* outDir, rootDir, removeComments, noEmit
+------------------------------------------------------------ */
+outDir
+ jsファイルの出力先
+ ./dist
+rootDir
+ コンパイルするルート。outDir でありのまま出力するために使う。
+ ./src
+removeComments
+ コメントを消すかどうか
+noEmit
+ 何も出力しない。コンパイル（チェックだけ）してjsファイルは出力しない。
+
+/* noEmitOnEroor (tsconfigにはない)
+------------------------------------------------------------ */
+コンパイルに失敗したものは出力しない
+
+/* Strict Type-Checking Options
+------------------------------------------------------------ */
+strict: true
+ 以下のすべてがtrueになる
+noImplicitAny
+ 暗黙的はanyはエラーにする
+strictNullChecks
+ stringとかにnullとundefineを入れるとエラーにする
+ unionは除く
+strictFunctionTypes
+ クラスの継承時に起こり得るバグをエラーにする
+strictBindCallApply
+ callとかbindの引数をチェックしてエラーにする
+strictPropertyInitialization
+ クラスを使用するときに使う
+noImplicitThis
+ thisが何を示しているのかわからない場合はエラーにする
+alwaysStrict
+ 常に"useStrict"を記述するか
+
+

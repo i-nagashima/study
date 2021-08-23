@@ -1,0 +1,10 @@
+Macショートカット
+
+・全画面を最小化
+option + command + h + m
+
+・画面のスナップショット
+shift + command + 4 → space → ウィンドウをクリック
+
+・隠しファイルを表示
+command + shift + .

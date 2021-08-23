@@ -1,0 +1,66 @@
+/* クラスを型として使う
+------------------------------------------------------------ */
+class Person {
+  name; string;
+  constructor(name: string) {
+    this.name = name
+  }
+  greeting(): void {
+
+  }
+}
+let person: Person;
+
+/* public修飾子とprivate修飾子
+------------------------------------------------------------ */
+private
+ private をつける。フィールド、メソッド
+public
+ public をつける、もしくはつけない。フィールド、メソッド
+
+/* 初期化の処理を省略
+------------------------------------------------------------ */
+constructor(private name: string, private age: number) {
+
+}
+
+/* readonly修飾子
+------------------------------------------------------------ */
+private readonly
+public readonly
+
+/* extends
+------------------------------------------------------------ */
+ES6と一緒
+
+/* protected修飾子
+------------------------------------------------------------ */
+protected
+ protected をつける。フィールド、メソッド
+
+/* ゲッター、セッター
+------------------------------------------------------------ */
+get name(): string {
+  return this._name;
+}
+
+戻り値に:voidをつけることはできない
+set name(value) {
+  this._name = value;
+}
+
+/* static
+------------------------------------------------------------ */
+private static
+public static
+protected static
+
+/* Abstruct
+------------------------------------------------------------ */
+クラス
+abstract class Class {}
+
+メソッド
+public abstract methos(): void {}
+protected abstract methos(): void {}
+
