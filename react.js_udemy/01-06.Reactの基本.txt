@@ -4,8 +4,12 @@ Reactのプロジェクトを作成する
 
 # npxの場合
 $ npx create-react-app <プロジェクト>
+
 # npmの場合
 $ npm init react-app <プロジェクト>
+
+# yarnの場合
+yarn create react-app <プロジェクト>
 
 /* JSX記法のルールを知る
 ------------------------------------------------------------ */

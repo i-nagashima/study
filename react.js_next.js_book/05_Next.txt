@@ -4,6 +4,11 @@ Nextのプロジェクトを作成する
 
 # npxの場合
 $ npx create-next-app <プロジェクト>
+$ npx create-next-app <プロジェクト> --ts
+
+# yarnの場合
+$ yarn create next-app <プロジェクト>
+$ yarn create next-app <プロジェクト> --typescript
 
 /* Next.jsは「pages」でページを用意する
 ------------------------------------------------------------ */
