@@ -29,8 +29,6 @@ Array.map((value) => (
 or
 Array.map((value) =>
 
-)
-
 /* JSXでのclass (css)
 ------------------------------------------------------------ */
 classはだめ。JavaScriptのclassと区別つかないから
