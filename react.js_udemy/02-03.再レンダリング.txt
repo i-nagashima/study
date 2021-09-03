@@ -22,7 +22,7 @@ const ChildArea = memo((props) => {
 # 親コンポーネントの関数定義でuseCallbackを
 import { useCallback } from 'react';
 const App = () => {
-  const { open, setOpen } = useState(false);
+  const [ open, setOpen ] = useState(false);
   const onClick = useCallback(() => setOpen(false), []);
 
   return (

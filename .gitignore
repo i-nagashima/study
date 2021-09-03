@@ -1,6 +1,8 @@
 # 共通
 .DS_Store
 .vscode/
+**/node_modules
+**/build
 
 # react.js_next.js_book
 react.js_next.js_book/react_app/node_modules
