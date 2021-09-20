@@ -63,11 +63,9 @@ declarationMap
 /* outDir, rootDir, removeComments, noEmit
 ------------------------------------------------------------ */
 outDir
- jsファイルの出力先
- ./dist
+ jsファイルの出力先 ./dist
 rootDir
- コンパイルするルート。outDir でありのまま出力するために使う。
- ./src
+ コンパイルするルート。outDir でありのまま出力するために使う。 ./src
 removeComments
  コメントを消すかどうか
 noEmit
