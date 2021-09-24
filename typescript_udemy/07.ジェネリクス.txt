@@ -31,14 +31,15 @@ const stringLightDatabase = new LightDatabase<string>();
 
 /* Interfaceにジェネリクス
 ------------------------------------------------------------ */
-Interface TmpDatabase<T> {
+interface TmpDatabase<T> {
   id: number;
   data: T[];
 }
 const tmpDatabase: TmpDatabase<number> = {
   id: 3,
-  data: [32]
-}
+  data: [32],
+};
+console.log(tmpDatabase.data);
 
 /* 内蔵されているジェネリクス型であるUtility型
 ------------------------------------------------------------ */
