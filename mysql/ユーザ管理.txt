@@ -60,7 +60,7 @@ require_secure_transport = ON
 // mysql_native_password
 MySQL5.7までのデフォルトの認証方式
 古いクライアントから接続する必要がある、caching_sha2_passwordが使用できない場合はこちら
-> create user hoge identified with mysql_native_password bu 'password';
+> create user hoge identified with mysql_native_password by 'password';
 
 // auth_socker
 OSのユーザとMySQLのアカウントは基本的には無関係
